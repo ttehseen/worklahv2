@@ -13,12 +13,32 @@ import java.io.*;
  We decided against implementing Runnable, because if we had done so, many threads could share the same object instance. 
 */
 
+/**
+ * @author Geoffrey
+ * This thread class acts as a middle man between the different user clients, sending information
+ * about the client to and from the GUI 
+ */
 public class ClientThread extends Thread {
 
+	/**
+	 * Socket for the user client
+	 */
 	private Socket client;
+	/**
+	 * Server variable with the database
+	 */
 	private Server server;
+	/**
+	 * stream that we will be writing to
+	 */
 	private ObjectOutputStream out;
+	/**
+	 * stream that will be reading from
+	 */
 	private ObjectInputStream in;
+	/**
+	 * User that has logged in
+	 */
 	private User user;
 		
 	/* Note: Should we change these to buffered input/output streams to be more efficient?
@@ -27,6 +47,11 @@ public class ClientThread extends Thread {
 	 */
 	
 	// constructor
+	/**
+	 * Instantiator for creating a client thread
+	 * @param c client connection 
+	 * @param server server variable holding the database
+	 */
 	public ClientThread(Socket c, Server server) {
 		this.server = server;
 		this.client = c;
@@ -39,6 +64,11 @@ public class ClientThread extends Thread {
 		}
 	}
 
+	/**
+	 * handles all task messages and adds them to the group
+	 * @param message message containing task information
+	 * @throws IOException
+	 */
 	private void handleTask(Message message) throws IOException {
 		String recipient = (String) message.content;
 		Task newTask = new Task((String) message.content, recipient);
@@ -46,6 +76,11 @@ public class ClientThread extends Thread {
 		send(message, user.getClientThread());
 	}
 	
+	/**
+	 * uploads a file to the server
+	 * @param message message to send to the server
+	 * @param c client that we would like to send something to
+	 */
 	public void uploadFile (Message message, ClientThread c) {
 		synchronized (this) {
 			try {
@@ -59,6 +94,9 @@ public class ClientThread extends Thread {
 		}
 	}
 	
+	/**
+	 * sends a list of online users to the client to pick from to chat with
+	 */
 	public void sendUsers() {
 		Message newMessage = new Message("userList", null, null);
 		ArrayList <String> userList = new ArrayList <String>();
@@ -71,6 +109,11 @@ public class ClientThread extends Thread {
 		send(newMessage, this);
 	}
 	
+	/**
+	 * sends a message to other clients
+	 * @param message message that we want to send
+	 * @param c client thread that we want to reach
+	 */
 	public void send(Message message, ClientThread c) {
 		synchronized (this) {
 			try {
@@ -84,6 +127,10 @@ public class ClientThread extends Thread {
 		}
 	}
 	
+	/**
+	 * updates the group view of the current user and the chat that that person is in
+	 * @param message message dictating what group the user should change to for loading of chat history
+	 */
 	private void updateGroup(Message message) {
 		ArrayList <String> userList = (ArrayList <String>) message.content;
 		if (!userList.contains(this.user.username)) {
@@ -113,6 +160,11 @@ public class ClientThread extends Thread {
 		send(updateGroupMessage, this);
 	}
 	
+	/**
+	 * gets the user associated with a string
+	 * @param _user username that we want to get
+	 * @return the user that matches the username
+	 */
 	private User getUser(String _user) {
 		for (User user : server.users) { 
 			if (_user.equals(user.username)) {
@@ -124,6 +176,10 @@ public class ClientThread extends Thread {
 	
 	
 
+	/**
+	 * sets the user when the user logs in
+	 * @param message login information from the user 
+	 */
 	private void setUser(Message message) {
 		for (User user : server.users) {
 			if (message.sender.equals(user.username)) {
@@ -145,10 +201,11 @@ public class ClientThread extends Thread {
 		send(loadUserGroups, this);
 	}
 	
+	
 	/* 
-	* Not quite sure why we have separate run() and read() methods.
-	*/
-
+	 * runs the main reading thread
+	 * @see java.lang.Thread#run()
+	 */
 	@Override
 	public void run() {
 		Thread reading = new Thread() {
@@ -164,16 +221,10 @@ public class ClientThread extends Thread {
 		reading.start();
 	}
 	
-	/*
-	* To make this safer code, I suggest that we use finally to close the output stream, 
-	* so that we still terminate the thread even if the thread is forcibly stopped.
-	* Right now, our code only appears to be handling the case when an IOException occurs.
-	
-	* Related: In the GUI, we do not close the screen immediately.
-	* This is a design choice: a user may not want to close the app completely just because they have lost connection to it.
-	* That is, users going in lifts, or through tunnels.
-	*/
-
+	/**
+	 * constantly read from the object input stream to check for messages and requests from the client
+	 * @throws IOException
+	 */
 	public void read() throws IOException {
 		while (true) {
 			try {
@@ -210,6 +261,12 @@ public class ClientThread extends Thread {
 		}
 	}
 	
+	/**
+	 * handles all messages sent from a client and decides whether to notify a user or
+	 * send the message to the user main chatbox
+	 * @param message message that we would like to send to other clients
+	 * @throws IOException
+	 */
 	public void messageHandler(Message message) throws IOException {
 		this.user.currentGroup.chatHistory.add(message);
 		for (User user : this.user.getGroupMembers()) {
@@ -227,6 +284,10 @@ public class ClientThread extends Thread {
 		}
 	}
 	
+	/**
+	 * uploads file attachements to other clients
+	 * @param message
+	 */
 	public void uploadFile (Message message) {
 		this.user.currentGroup.chatHistory.add(message);
 		for (User user : this.user.getGroupMembers()) {
@@ -241,6 +302,10 @@ public class ClientThread extends Thread {
 		}
 	}
 
+	/**
+	 * closes and cleans the connection to the server and client
+	 * @throws IOException
+	 */
 	public void closeConnection() throws IOException
 	{
 		System.out.println("Client disconnecting, cleaning the data!");
