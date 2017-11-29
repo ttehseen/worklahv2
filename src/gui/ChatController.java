@@ -335,7 +335,7 @@ public class ChatController implements Initializable {
             String timeStamp;
             timeStamp = new SimpleDateFormat("HH:m"
                     + "m ").format(Calendar.getInstance().getTime());
-                chatView2.setFont(Font.loadFont("file:resources/fonts/OpenSansEmoji.ttf", 15));
+//                chatView2.setFont(Font.loadFont("file:resources/fonts/OpenSansEmoji.ttf", 15));
 		chatView2.appendText(str + " " + timeStamp+ "\n");
 		chatView2.selectPositionCaret(chatView2.getText().length()-1);
 //		chatView.appendText("\n");
@@ -346,7 +346,7 @@ public class ChatController implements Initializable {
 //	public void setID(String _userID){
 //		this.searchTask.setText(_userID);
 //	}
-        public void populateUserList(String _user){
+        public void populateUserList(String _user) throws IllegalStateException {
         	try {
             if(userList.getItems().contains(_user)){
                 userList.getItems().remove(_user);

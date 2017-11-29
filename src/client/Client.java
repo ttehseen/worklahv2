@@ -116,7 +116,8 @@ public class Client extends Thread {
 						this.popupController.addUserElement(_username);
 					}
 				} else if (message.type.equals("updateGroup")) {
-					System.out.println("GOT update");
+					System.out.println("GOT UPDATE");
+					System.out.println(((Group) message.content).chatHistory);
 					ArrayList <Task> taskList = ((Group) message.content).tasks;
 					ArrayList <Message> chatHistory = ((Group) message.content).chatHistory;
 					for (Message msg : chatHistory) {
@@ -155,7 +156,7 @@ public class Client extends Thread {
 	public void loadHistory(ArrayList <Message> chatHistory) {
 		for (Message message : chatHistory) {
 			if (message.sender.equals(this.username)) {
-				guiController.append2((String) message.content);
+				guiController.append2((String) message.content + "\n");
 			} else {
 				guiController.append((String) message.content);
 			}

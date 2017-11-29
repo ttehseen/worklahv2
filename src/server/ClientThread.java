@@ -109,6 +109,7 @@ public class ClientThread extends Thread {
 		}
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
+		System.out.println(((Group) updateGroupMessage.content).chatHistory);
 		send(updateGroupMessage, this);
 	}
 	
