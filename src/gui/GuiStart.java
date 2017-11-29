@@ -18,6 +18,10 @@ import javafx.stage.StageStyle;
  */
 public class GuiStart extends Application {
 
+	/* 
+	 * Starts the main GUI that will in turn initiate a client-server connection
+	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
@@ -37,6 +41,7 @@ public class GuiStart extends Application {
 	}
 
 	/**
+	 * main to run the GUI
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
