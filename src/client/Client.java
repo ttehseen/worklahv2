@@ -54,7 +54,6 @@ public class Client extends Thread {
 
 	public void updateGroup(ArrayList <String> newGroup) {
 		Message updateGroupMessage = new Message("updateGroup", this.username, null);
-		System.out.println("GROUP UPDATED TO:" +  newGroup);
 		updateGroupMessage.content = newGroup;
 		send(updateGroupMessage);
 	}
@@ -66,7 +65,9 @@ public class Client extends Thread {
 
 	public void sendTaskToGroup(String task, String recipient) {
 		Message newMessage = new Message("task", this.username, task);
-		newMessage.content = recipient;
+		ArrayList <String> recipients = new ArrayList <String>(); 
+		recipients.add(recipient);
+		newMessage.setGroup(recipients);
 		send(newMessage);
 	}
 	
@@ -116,13 +117,8 @@ public class Client extends Thread {
 						this.popupController.addUserElement(_username);
 					}
 				} else if (message.type.equals("updateGroup")) {
-					System.out.println("GOT UPDATE");
-					System.out.println(((Group) message.content).chatHistory);
 					ArrayList <Task> taskList = ((Group) message.content).tasks;
 					ArrayList <Message> chatHistory = ((Group) message.content).chatHistory;
-					for (Message msg : chatHistory) {
-						System.out.println(msg);
-					}
 					this.loadHistory(chatHistory);
 					this.loadTaskList(taskList);
 				} else if (message.type.equals("loadUserGroups")) {
@@ -181,15 +177,14 @@ public class Client extends Thread {
 	}
 
 	public void send(Message message) {
-		synchronized (this) {
-			try {
-				out.writeObject(message);
-				out.flush();
-			} 
-			catch (IOException ex) {
-				System.out.println("Exception: send() in Client");
-				ex.printStackTrace();
-			}
+		try {
+			out.reset();
+			out.writeObject(message);
+			out.flush();
+		} 
+		catch (IOException ex) {
+			System.out.println("Exception: send() in Client");
+			ex.printStackTrace();
 		}
 	}
 

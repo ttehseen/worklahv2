@@ -29,75 +29,73 @@ import javafx.stage.Stage;
  * @author student
  */
 public class PopupController implements Initializable {
-    
-  @FXML
-    private ListView<String> onlineList;
-  @FXML
-    private Button button2;
-    public Client client;
-    public ListView<String> primaryUserList;
-    private Stage prevStage;
-  @FXML
-    void onlineUserSelected(MouseEvent event) {
-//    chatController.populateUserList("taha");
-    }
-  @FXML
-    void button2Listener(ActionEvent event) {
-        
-        List<String> showing = onlineList.getSelectionModel().getSelectedItems();
-        String listString = String.join(", ", showing);
-        primaryUserList.getItems().add(listString);
-        client.updateGroup(new ArrayList<String>(showing));
-        client.addConversation(new ArrayList<String>(showing));
-        final Node source = (Node) event.getSource();
-        final Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
 
+	@FXML
+	private ListView<String> onlineList;
+	@FXML
+	private Button button2;
+	protected Client client;
+	protected ChatController chatController; 
+	protected ListView<String> primaryUserList;
+	
+	@FXML
+	void onlineUserSelected(MouseEvent event) {
+		
+	}
+	
+	@FXML
+	void button2Listener(ActionEvent event) {
 
-    }
-    
-    @FXML
-    void enterPressed(KeyEvent event) {
-        if(event.getCode()==KeyCode.ENTER){
-             List<String> showing = onlineList.getSelectionModel().getSelectedItems();
-        String listString = String.join(", ", showing);
-        primaryUserList.getItems().add(listString);
-        client.updateGroup(new ArrayList<String>(showing));
-        client.addConversation(new ArrayList<String>(showing));
-        final Node source = (Node) event.getSource();
-        final Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
-        }
-    }
-  
-  	void setClient(Client _client) {
-  		this.client = _client;
-  	    this.client.setPopupController(this);
-  	}
-  
-//  @FXML
-//    void addRandomElement(ActionEvent event) {
-//        Random rand = new Random ();
-//    onlineList.getItems().add(Integer.toString(rand.nextInt(50)));
-//
-//    }
-  
-  public void addUserElement(String _user) {
-	  onlineList.getItems().add(_user);
-
-  }
-  
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-     onlineList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    }
-    
-    void setPrevStage(Stage stage) {
-		this.prevStage = stage;
+		List<String> showing = onlineList.getSelectionModel().getSelectedItems();
+		client.updateGroup(new ArrayList<String>(showing));
+		client.addConversation(new ArrayList<String>(showing));
+		final Node source = (Node) event.getSource();
+		final Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+		this.chatController.chatView.setText("");
+		this.chatController.chatView2.setText("");
+		this.chatController.conversantName.setText(String.join(", ", showing));
+		this.chatController.conversantImage.setVisible(true);
+		this.chatController.greenCircle.setVisible(true);
 
 	}
- 
+
+	@FXML
+	void enterPressed(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER){
+			List<String> showing = onlineList.getSelectionModel().getSelectedItems();
+			client.updateGroup(new ArrayList<String>(showing));
+			client.addConversation(new ArrayList<String>(showing));
+			final Node source = (Node) event.getSource();
+			final Stage stage = (Stage) source.getScene().getWindow();
+			stage.close();
+			this.chatController.chatView.setText("");
+			this.chatController.chatView2.setText("");
+			this.chatController.conversantName.setText(String.join(", ", showing));
+			this.chatController.conversantImage.setVisible(true);
+			this.chatController.greenCircle.setVisible(true);
+		}
+	}
+	
+	void setChatController(ChatController _chatController) {
+		this.chatController = _chatController;
+	}
+
+	void setClient(Client _client) {
+		this.client = _client;
+		this.client.setPopupController(this);
+	}
+
+	public void addUserElement(String _user) {
+		onlineList.getItems().add(_user);
+	}
+
+	/**
+	 * Initializes the controller class.
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		onlineList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	}
+
 }

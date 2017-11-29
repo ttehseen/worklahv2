@@ -22,9 +22,10 @@ public class Message implements Serializable {
 	@Override
 	public String toString() {
 		return "{" + "\n" +
-				"\ttype : " + type + "\n" +
-				"\tsender : " + sender + "\n" +
-				"\tcontent : " + content + "\n" +
+				"\ttype : " + this.type + "\n" +
+				"\tsender : " + this.sender + "\n" +
+				"\tcontent : " + this.content + "\n" +
+				"\tgroup : " + this.group + "\n" +
 				"}";
 	}
 	

@@ -28,25 +28,24 @@ import javafx.stage.Stage;
  */
 public class LoginScreenController implements Initializable {
 
-	
-
 	@FXML
 	private TextField Username;
 
 	@FXML
 	private Button loginButton;
-        
+
 	@FXML
 	private PasswordField passwordField;    
 
 	protected Client client;
 	protected String userID;
-        protected String password;
-        private Stage stage;
-        private Scene scene;
-        private ChatController chatController;
-        public TextField primaryUserName;
+	protected String password;
+	private Stage stage;
+	private Scene scene;
+	private ChatController chatController;
+	public TextField primaryUserName;
 	Stage prevStage;
+	
 	/**
 	 * Initializes the controller class.
 	 */
@@ -57,34 +56,29 @@ public class LoginScreenController implements Initializable {
 
 	@FXML
 	private void loginPressed(ActionEvent event) throws IOException, ClassNotFoundException {
-                password= passwordField.getText();
+		password= passwordField.getText();
 		userID = Username.getText().trim();
-		if ((userID.length() == 0)||(password.length()==0))
+		if ((userID.length() == 0)||(password.length()==0)) {
 			return;
+		}
 		stage = new Stage();
-
 
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ChatScreen.fxml"));     
 		Parent root = (Parent) fxmlLoader.load();          
 		ChatController controller = fxmlLoader.<ChatController>getController();
 		controller.initialiseConversations();
 
-		// Creates a server/client;
 		int port = 8080;
 		String server = "127.0.0.1";
 		client = new Client(server, port, controller, userID, password);
 		client.start();
 
 		controller.setClient(client);
-//                controller.userName=primaryUserName;
-                controller.setUserID(userID);
-//                primaryUserName.setText(userID);
-                
+		controller.setUserID(userID);
+
 		scene = new Scene(root); 
 		stage.setScene(scene);
 		chatController = new ChatController();
-//		chatController.redirectHome(stage, this.Username.getText().trim());
-//              chatController.setID(this.Username.getText().trim());
 		stage.setMinHeight(600);
 		stage.setMinWidth(1300);
 		stage.show();

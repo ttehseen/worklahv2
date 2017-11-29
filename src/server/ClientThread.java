@@ -70,10 +70,22 @@ public class ClientThread extends Thread {
 	 * @throws IOException
 	 */
 	private void handleTask(Message message) throws IOException {
-		String recipient = (String) message.content;
-		Task newTask = new Task((String) message.content, recipient);
+		String task = (String) message.content;
+		Task newTask = new Task(task, message.group.get(0));
 		this.user.currentGroup.tasks.add(newTask);
-		send(message, user.getClientThread());
+		for (User user : this.user.getGroupMembers()) {
+			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
+				user.allGroups.add(this.user.currentGroup);
+				message.type = "notifyUser";
+				if (!user.equals(this.user)) {
+					this.send(message, user.getClientThread());
+				}
+			} else {
+				if (!user.equals(this.user)) {
+					this.send(message, user.getClientThread());
+				}
+			}
+		}
 	}
 	
 	/**
@@ -82,15 +94,13 @@ public class ClientThread extends Thread {
 	 * @param c client that we would like to send something to
 	 */
 	public void uploadFile (Message message, ClientThread c) {
-		synchronized (this) {
-			try {
-				c.out.writeObject(message);
-				c.out.flush();
-			} 
-			catch (IOException ex) {
-				System.out.println("Exception: uploadFile in ClientThread");
-				ex.printStackTrace();
-			}
+		try {
+			c.out.writeObject(message);
+			c.out.flush();
+		} 
+		catch (IOException ex) {
+			System.out.println("Exception: uploadFile in ClientThread");
+			ex.printStackTrace();
 		}
 	}
 	
@@ -117,6 +127,7 @@ public class ClientThread extends Thread {
 	public void send(Message message, ClientThread c) {
 		synchronized (this) {
 			try {
+				c.out.reset();
 				c.out.writeObject(message);
 				c.out.flush();
 			} 
@@ -130,12 +141,11 @@ public class ClientThread extends Thread {
 	/**
 	 * updates the group view of the current user and the chat that that person is in
 	 * @param message message dictating what group the user should change to for loading of chat history
+	 * @throws IOException 
 	 */
-	private void updateGroup(Message message) {
+	private void updateGroup(Message message) throws IOException {
 		ArrayList <String> userList = (ArrayList <String>) message.content;
-		if (!userList.contains(this.user.username)) {
-			userList.add(this.user.username);
-		}
+		userList.add(this.user.username);
 		boolean newGroupCreated = true;
 		for (Group g : this.server.groups) {
 			if (g.checkMembers(userList)) {
@@ -152,11 +162,9 @@ public class ClientThread extends Thread {
 			this.user.currentGroup = newGroup;
 			this.user.allGroups.add(newGroup);
 			this.server.groups.add(newGroup);
-			System.out.println("NEW GROUP: " + newGroup.groupMemberNames);
 		}
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
-		System.out.println(((Group) updateGroupMessage.content).chatHistory);
 		send(updateGroupMessage, this);
 	}
 	
