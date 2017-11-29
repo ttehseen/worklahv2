@@ -133,9 +133,12 @@ public class ChatController implements Initializable {
 	 @FXML
 	 private void taskDragged(MouseEvent event) {
 		 int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
-		 String theTask= taskList.getItems().get(selectedIndex);
+		 String task = taskList.getItems().get(selectedIndex);
 		 taskList.getSelectionModel().clearSelection();
-		 taskList.getItems().remove(theTask);
+		 taskList.getItems().remove(task);
+		 task = task.replace("@task ", "");
+		 String task_split[] = task.split(" ", 2);
+		 client.removeTask(task_split[1].replace("\n", ""));
 	 }
 
 	 @FXML
@@ -225,7 +228,6 @@ public class ChatController implements Initializable {
 				 append(sassiAnswer.getWhat());}
 			 else {
 				 append2(message);
-
 				 append("Nice to meet you, but not too nice.");
 			 }
 		 }
@@ -233,10 +235,10 @@ public class ChatController implements Initializable {
 			 String catchPhrase = "@task ";
 			 if (message.contains(catchPhrase)) {
 				 String task = message.replace("@task ", "");
-				 String arr[] = task.split(" ", 2);
-				 taskList.getItems().add("@" + arr[0] + ": " + arr[1] + "\n");
+				 String task_split[] = task.split(" ", 2);
+				 taskList.getItems().add("@" + task_split[0] + ": " + task_split[1] + "\n");
 				 chatBox.setText("");
-				 client.sendTaskToGroup(arr[1], arr[0]);
+				 client.sendTaskToGroup(task_split[1], task_split[0]);
 			 }
 			 else{
 				 client.sendMessageToGroup(message);
@@ -251,10 +253,13 @@ public class ChatController implements Initializable {
 	 @FXML
 	 void dateSelected(ActionEvent event) {
 		 int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
-		 String theTask = taskList.getSelectionModel().getSelectedItem();
+		 String task = taskList.getSelectionModel().getSelectedItem();
 		 String selectedDate = dateSelector.getValue().toString();
-		 taskList.getItems().add(selectedIndex, theTask +" due by " + selectedDate );
-		 taskList.getItems().remove(selectedIndex+1);
+		 taskList.getItems().add(selectedIndex, task +" due by " + selectedDate );
+		 taskList.getItems().remove(selectedIndex + 1);
+		 task = task.replace("@task ", "");
+		 String task_split[] = task.split(" ", 2);
+		 client.setTaskDeadline(task_split[1].replace("\n", ""), selectedDate);
 	 }
 	 
 	 @FXML
@@ -275,17 +280,16 @@ public class ChatController implements Initializable {
 				 append(sassiAnswer.getWhat());}
 			 else {
 				 append2(message);
-
 				 append("Nice to meet you, but not too nice.");
 			 }
 		 } else {
 			 String catchPhrase = "@task ";
 			 if (message.contains(catchPhrase)) {
 				 String task = message.replace("@task ", "");
-				 String arr[] = task.split(" ", 2);
-				 taskList.getItems().add("@" + arr[0] + ": " + arr[1] + "\n");
+				 String task_split[] = task.split(" ", 2);
+				 taskList.getItems().add("@" + task_split[0] + ": " + task_split[1] + "\n");
 				 chatBox.setText("");
-				 client.sendTaskToGroup(arr[1], arr[0]);
+				 client.sendTaskToGroup(task_split[1], task_split[0]);
 			 }
 			 else {
 				 client.sendMessageToGroup(message);

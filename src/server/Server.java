@@ -21,6 +21,7 @@ public class Server
 			e.printStackTrace();
 		}
 	} 
+	
 	public void acceptClientLoop() {
 		groups = new ArrayList <Group>();
 		clients = new ArrayList <ClientThread>();

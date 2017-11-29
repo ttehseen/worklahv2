@@ -11,7 +11,7 @@ import java.io.*;
 /* 
  By extending Thread, each newly spawned thread is instantiated as as a unique object associated. 
  We decided against implementing Runnable, because if we had done so, many threads could share the same object instance. 
-*/
+ */
 
 /**
  * @author Geoffrey
@@ -40,12 +40,12 @@ public class ClientThread extends Thread {
 	 * User that has logged in
 	 */
 	private User user;
-		
+
 	/* Note: Should we change these to buffered input/output streams to be more efficient?
 	 * If we implement Buffered I/O streams,this will optimize input and output 
 	 * by reducing the number of calls to the native API.
 	 */
-	
+
 	// constructor
 	/**
 	 * Instantiator for creating a client thread
@@ -87,7 +87,7 @@ public class ClientThread extends Thread {
 			}
 		}
 	}
-	
+
 	/**
 	 * uploads a file to the server
 	 * @param message message to send to the server
@@ -103,7 +103,7 @@ public class ClientThread extends Thread {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * sends a list of online users to the client to pick from to chat with
 	 */
@@ -118,7 +118,7 @@ public class ClientThread extends Thread {
 		newMessage.setUserList(userList);
 		send(newMessage, this);
 	}
-	
+
 	/**
 	 * sends a message to other clients
 	 * @param message message that we want to send
@@ -137,7 +137,7 @@ public class ClientThread extends Thread {
 			}
 		}
 	}
-	
+
 	/**
 	 * updates the group view of the current user and the chat that that person is in
 	 * @param message message dictating what group the user should change to for loading of chat history
@@ -167,7 +167,32 @@ public class ClientThread extends Thread {
 		updateGroupMessage.content = this.user.currentGroup;
 		send(updateGroupMessage, this);
 	}
+
+	private void updateTaskDeadline(Message message) {
+		String _task = ((ArrayList <String>) message.content).get(0);
+		String deadline = ((ArrayList <String>) message.content).get(1);
+		for (Task task : this.user.currentGroup.tasks) {
+			if (task.task.equals(_task)) {
+				task.setDeadline(deadline);
+			}
+		}
+		Message updateGroupMessage = new Message("updateGroup", null, null);
+		updateGroupMessage.content = this.user.currentGroup;
+		send(updateGroupMessage, this);
+	}
 	
+	private void removeTask(Message message) {
+		String _task = (String) message.content;
+		for (Task task : this.user.currentGroup.tasks) {
+			if (task.task.equals(_task)) {
+				this.user.currentGroup.tasks.remove(task);
+			}
+		}
+		Message updateGroupMessage = new Message("updateGroup", null, null);
+		updateGroupMessage.content = this.user.currentGroup;
+		send(updateGroupMessage, this);
+	}
+
 	/**
 	 * gets the user associated with a string
 	 * @param _user username that we want to get
@@ -181,8 +206,8 @@ public class ClientThread extends Thread {
 		}
 		return(null);
 	}
-	
-	
+
+
 
 	/**
 	 * sets the user when the user logs in
@@ -208,8 +233,8 @@ public class ClientThread extends Thread {
 		loadUserGroups.content = groupList;
 		send(loadUserGroups, this);
 	}
-	
-	
+
+
 	/* 
 	 * runs the main reading thread
 	 * @see java.lang.Thread#run()
@@ -228,7 +253,7 @@ public class ClientThread extends Thread {
 		};
 		reading.start();
 	}
-	
+
 	/**
 	 * constantly read from the object input stream to check for messages and requests from the client
 	 * @throws IOException
@@ -254,8 +279,11 @@ public class ClientThread extends Thread {
 					this.user.goOffline();
 				} else if (message.type.equals("uploadFile")) {
 					this.uploadFile(message);
-				} 
-			
+				} else if (message.type.equals("taskDeadline")) {
+					this.updateTaskDeadline(message);
+				} else if (message.type.equals("removeTask")) {
+					this.removeTask(message);
+				}
 			}
 			catch (Exception e) {
 				try {
@@ -268,7 +296,7 @@ public class ClientThread extends Thread {
 			}
 		}
 	}
-	
+
 	/**
 	 * handles all messages sent from a client and decides whether to notify a user or
 	 * send the message to the user main chatbox
@@ -291,22 +319,21 @@ public class ClientThread extends Thread {
 			}
 		}
 	}
-	
+
 	/**
 	 * uploads file attachements to other clients
 	 * @param message
 	 */
 	public void uploadFile (Message message) {
-		this.user.currentGroup.chatHistory.add(message);
 		for (User user : this.user.getGroupMembers()) {
 			if (!user.equals(this.user)) {
 				this.send(message, user.getClientThread());
 			}
 			else {
 				if (!user.equals(this.user)) {
-				this.send(message, user.getClientThread());
+					this.send(message, user.getClientThread());
+				}
 			}
-		}
 		}
 	}
 

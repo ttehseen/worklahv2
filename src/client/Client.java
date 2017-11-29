@@ -71,6 +71,19 @@ public class Client extends Thread {
 		send(newMessage);
 	}
 	
+	public void removeTask(String task) {
+		Message newMessage = new Message("removeTask", this.username, task);
+		send(newMessage);
+	}
+	
+	public void setTaskDeadline(String task, String selectedDate) {
+		ArrayList <String> taskInformation = new ArrayList <String>();
+		taskInformation.add(task);
+		taskInformation.add(selectedDate);
+		Message newMessage = new Message("taskDeadline", this.username, taskInformation);
+		send(newMessage);
+	}
+	
 	public void getOnlineUsers() {
 		Message newMessage = new Message("getUsers", this.username, null);
 		send(newMessage);
@@ -144,7 +157,7 @@ public class Client extends Thread {
 				guiController.populateTaskList("@" + newTask.user + ": " + newTask.task + "\n");
 
 			} else {
-				guiController.populateTaskList("@" + newTask.user + ": " + newTask.task + " due by " + newTask.deadline.toString() + "\n");
+				guiController.populateTaskList("@" + newTask.user + ": " + newTask.task + "\ndue by " + newTask.deadline.toString() + "\n");
 			}
 		}
 	}
@@ -162,7 +175,7 @@ public class Client extends Thread {
 	public void addConversation(ArrayList <String> newConversation) {
 		guiController.addConversation(newConversation);
 	}
-	
+
 	public void notifyUser(Message message) {
 		message.group.remove(this.username);
 		guiController.addConversation(message.group);
