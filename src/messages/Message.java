@@ -3,7 +3,6 @@ package messages;
 import java.io.Serializable;
 import java.util.ArrayList;
 import groups.Group;
-import tasks.Task;
 
 public class Message implements Serializable {
 

@@ -5,11 +5,6 @@
  */
 package sassibot;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import messages.Message;
-
 public class Sassimain {
 	
 	public Answers answer;
