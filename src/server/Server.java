@@ -45,7 +45,7 @@ public class Server
 	/**
 	 * Starts a thread to keep accepting clients
 	 */
-	public void acceptClientLoop() {
+	private void acceptClientLoop() {
 		groups = new ArrayList <Group>();
 		clients = new ArrayList <ClientThread>();
 		users = new ArrayList <User>();

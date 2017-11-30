@@ -19,19 +19,15 @@ public class Upload implements Runnable {
 	/**
 	 * file input stream to read from
 	 */
-	public FileInputStream in;
+	private FileInputStream in;
 	/**
 	 * output stream to the client
 	 */
-	public OutputStream out;
-	/**
-	 * File we would like to upload
-	 */
-	public File file;
+	private OutputStream out;
 	/**
 	 * GUI controller to print succcess status to
 	 */
-	public ChatController gui;
+	private ChatController gui;
 
 	/**
 	 * Instantiator for an upload object
@@ -42,7 +38,6 @@ public class Upload implements Runnable {
 	 */
 	public Upload(String ip, int port, File filepath, ChatController screen){
 		try {
-			this.file = filepath; 
 			this.gui = screen;
 			this.connection = new Socket(InetAddress.getByName(ip), port);
 			in = new FileInputStream(filepath);

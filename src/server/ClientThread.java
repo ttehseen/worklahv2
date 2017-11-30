@@ -98,7 +98,7 @@ public class ClientThread extends Thread {
 	/**
 	 * sends a list of online users to the client to pick from to chat with
 	 */
-	public void sendUsers() {
+	private void sendUsers() {
 		Message newMessage = new Message("userList", null, null);
 		ArrayList <String> userList = new ArrayList <String>();
 		for (User user : server.users) {
@@ -115,7 +115,7 @@ public class ClientThread extends Thread {
 	 * @param message message that we want to send
 	 * @param c client thread that we want to reach
 	 */
-	public void send(Message message, ClientThread c) {
+	private void send(Message message, ClientThread c) {
 		if (c.user.onlineStatus == false) {
 			return;
 		}
@@ -296,7 +296,7 @@ public class ClientThread extends Thread {
 	 * constantly read from the object input stream to check for messages and requests from the client
 	 * @throws IOException
 	 */
-	public void read() throws IOException {
+	private void read() throws IOException {
 		while (true) {
 			try {
 				Message message = (Message) in.readObject();
@@ -343,7 +343,7 @@ public class ClientThread extends Thread {
 	 * @param message message that we would like to send to other clients
 	 * @throws IOException
 	 */
-	public void uploadHandler(Message message) throws IOException {
+	private void uploadHandler(Message message) throws IOException {
 		this.user.currentGroup.chatHistory.add(message);
 		for (User user : this.user.getGroupMembers()) {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
@@ -367,7 +367,7 @@ public class ClientThread extends Thread {
 	 * @param message message that we would like to send to other clients
 	 * @throws IOException
 	 */
-	public void messageHandler(Message message) throws IOException {
+	private void messageHandler(Message message) throws IOException {
 		this.user.currentGroup.chatHistory.add(message);
 		System.out.println(this.user.currentGroup.chatHistory);
 		for (User user : this.user.getGroupMembers()) {
@@ -389,7 +389,7 @@ public class ClientThread extends Thread {
 	 * closes and cleans the connection to the server and client
 	 * @throws IOException
 	 */
-	public void closeConnection() throws IOException
+	private void closeConnection() throws IOException
 	{
 		System.out.println("Client disconnecting, cleaning the data!");
 		try {

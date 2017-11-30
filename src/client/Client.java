@@ -95,7 +95,7 @@ public class Client extends Thread {
 	/**
 	 * sets the user for the client
 	 */
-	public void setUser() {
+	private void setUser() {
 		Message setUser = new Message("setUser", this.username, this.password);
 		send(setUser);
 	}
@@ -258,7 +258,7 @@ public class Client extends Thread {
 	 * notifies the client that a new task has come in
 	 * @param message message that has been sent to the client
 	 */
-	public void notifyUserTask(Message message) {
+	private void notifyUserTask(Message message) {
 		message.aux.remove(this.username);
 		guiController.addConversation(message.aux);
 	}
@@ -267,7 +267,7 @@ public class Client extends Thread {
 	 * loads the task list of the group the client has selected
 	 * @param taskList task list of the group the client has selected
 	 */
-	public void loadTaskList(ArrayList <Task> taskList) {
+	private void loadTaskList(ArrayList <Task> taskList) {
 		guiController.taskList.getItems().clear();
 		System.out.println("RECEIVED");
 		System.out.println(taskList);
@@ -286,7 +286,7 @@ public class Client extends Thread {
 	 * loads the chat history of the group the client has selected
 	 * @param chatHistory chat history of the group the client has selected
 	 */
-	public void loadHistory(ArrayList <Message> chatHistory) {
+	private void loadHistory(ArrayList <Message> chatHistory) {
 		guiController.chatView.setText("");
 		for (Message message : chatHistory) {
 				guiController.append((String) message.content, message.sender);
@@ -298,7 +298,7 @@ public class Client extends Thread {
 	 * Calls a thread to download the file that will be sent from another client
 	 * @param message file name of the file that will be downloaded
 	 */
-	public void downloadFile(Message message) {
+	private void downloadFile(Message message) {
 		guiController.append((String) message.content, message.sender);
 		String fileName = (String) message.content;
 		int start = fileName.indexOf(" '");
@@ -321,7 +321,7 @@ public class Client extends Thread {
 	 * notifies the client that a new message has come in
 	 * @param message new message that has been sent to the client
 	 */
-	public void notifyUser(Message message) {
+	private void notifyUser(Message message) {
 		message.group.remove(this.username);
 		guiController.addConversation(message.group);
 	}
@@ -330,7 +330,7 @@ public class Client extends Thread {
 	 * sends a message to other clients
 	 * @param message
 	 */
-	public void send(Message message) {
+	private void send(Message message) {
 		try {
 			out.reset();
 			out.writeObject(message);
@@ -345,7 +345,7 @@ public class Client extends Thread {
 	/**
 	 * closes and cleans the connection of the client
 	 */
-	public void closeConnection() {
+	private void closeConnection() {
 		System.out.println("Client Disconnecting!");
 		try {
 			this.out.close();

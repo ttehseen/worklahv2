@@ -89,7 +89,7 @@ public class ChatController implements Initializable {
 	Stage prevStage;
 	private Scene scene;
 	private Stage stage;
-	public ArrayList<ArrayList<String>> conversations;
+	protected ArrayList<ArrayList<String>> conversations;
 	String currentConversation;
 	boolean sassiBot;
 
@@ -161,7 +161,7 @@ public class ChatController implements Initializable {
 	 * @throws IOException 
 	 */   
 	@FXML
-	void newChatPressed(MouseEvent event) throws IOException {
+	private void newChatPressed(MouseEvent event) throws IOException {
 
 		stage = new Stage();
 		FXMLLoader fxmlLoader = new FXMLLoader();
@@ -189,28 +189,28 @@ public class ChatController implements Initializable {
 	 * @param event 
 	 */ 
 	@FXML
-	void emoji1selected(MouseEvent event) {
+	private void emoji1selected(MouseEvent event) {
 		String message="\u2615";
 		client.sendMessageToGroup(message);
 		append(message+"\n", client.username);
 	}
 
 	@FXML
-	void emoji2selected(MouseEvent event) {
+	private void emoji2selected(MouseEvent event) {
 		String message="\u263A";
 		client.sendMessageToGroup(message);
 		append(message+"\n", client.username);
 	}
 
 	@FXML
-	void emoji3selected(MouseEvent event) {
+	private void emoji3selected(MouseEvent event) {
 		String message="\u26C7";
 		client.sendMessageToGroup(message);
 		append(message+"\n", client.username);
 	}
 
 	@FXML
-	void emoji4selected(MouseEvent event) {
+	private void emoji4selected(MouseEvent event) {
 		String message="\u2639";
 		client.sendMessageToGroup(message);
 		append(message+"\n", client.username);
@@ -222,7 +222,7 @@ public class ChatController implements Initializable {
 	 * @param event 
 	 */
 	@FXML
-	void botChecked(MouseEvent event) {
+	private void botChecked(MouseEvent event) {
 		userList.setVisible(false);
 		chatView.setText("");
 		if (	sassiBot) {
@@ -246,7 +246,7 @@ public class ChatController implements Initializable {
 	 * @param event 
 	 */
 	@FXML
-	void logoutPressed(ActionEvent event) {
+	private void logoutPressed(ActionEvent event) {
 		client.goOffline();
 		System.exit(0);
 	}
@@ -259,7 +259,7 @@ public class ChatController implements Initializable {
 	 * to appoint a task. If it does, it will add the sent text to the task pane. If not, it adds it sends it over to the chat group selected.
 	 */
 	@FXML
-	protected void sendPressed(MouseEvent event) throws InterruptedException {
+	private void sendPressed(MouseEvent event) throws InterruptedException {
 		String message = chatBox.getText();
 
 		if (botCheckBox.isSelected()){
@@ -303,7 +303,7 @@ public class ChatController implements Initializable {
 	 * @param event 
 	 */
 	@FXML
-	void dateSelected(ActionEvent event) {
+	private void dateSelected(ActionEvent event) {
 		int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
 		String task = taskList.getSelectionModel().getSelectedItem();
 		String selectedDate = dateSelector.getValue().toString();
@@ -368,7 +368,7 @@ public class ChatController implements Initializable {
 
 	 */	 
 	@FXML
-	String attachButtonPressed(MouseEvent event) {
+	private String attachButtonPressed(MouseEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Attachment");
 		fileChooser.showOpenDialog(stage);
@@ -400,7 +400,6 @@ public class ChatController implements Initializable {
 	 * @param _user 
 	 */	 
 
-
 	public void populateUserList(String _user) throws IllegalStateException {
 
 		try {
@@ -417,6 +416,7 @@ public class ChatController implements Initializable {
 		} catch (IllegalStateException e) {
 		}
 	}
+	
 	/**
 	 * Method to populate the Tasks. Takes in a string and adds it to the string of tasks.
 	 * @param _task 
@@ -424,6 +424,7 @@ public class ChatController implements Initializable {
 	public void populateTaskList(String _task){
 		taskList.getItems().add(_task);
 	}
+	
 	/**
 	 * Method to add to the conversations.
 	 * @param _conversation 
@@ -443,7 +444,7 @@ public class ChatController implements Initializable {
 	 * @param group2
 	 * @return 
 	 */	
-	public boolean checkMembers(ArrayList <String> group1, ArrayList <String> group2) {
+	private boolean checkMembers(ArrayList <String> group1, ArrayList <String> group2) {
 		Collections.sort(group1);
 		Collections.sort(group2);
 		return(group1.equals(group2));
@@ -454,7 +455,7 @@ public class ChatController implements Initializable {
 	 * @param event 
 	 */
 	@FXML
-	void deleteSelected(ActionEvent event) {
+	private void deleteSelected(ActionEvent event) {
 		int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
 		String task = taskList.getItems().get(selectedIndex);
 		taskList.getSelectionModel().clearSelection();
