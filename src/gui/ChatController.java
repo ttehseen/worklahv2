@@ -30,19 +30,23 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.css.PseudoClass;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 /**
  * FXML Controller class
  *
@@ -52,6 +56,7 @@ public class ChatController implements Initializable {
 
 	@FXML
 	private ListView<String> userList;
+        
 	@FXML
 	public ListView<String> taskList;
 	@FXML
@@ -220,7 +225,7 @@ public class ChatController implements Initializable {
 
 	@FXML
 	void emoji3selected(MouseEvent event) {
-		String message="\u2608";
+		String message="\u26C7";
 		client.sendMessageToGroup(message);
 		append(message+"\n", client.username);
 	}
@@ -239,6 +244,7 @@ public class ChatController implements Initializable {
 	 */
 	@FXML
 	void botChecked(MouseEvent event) {
+                userList.setVisible(false);
 		chatView.setText("");
 		if (	sassiBot) {
 			for (ArrayList <String> conversation : this.conversations) {
@@ -247,6 +253,7 @@ public class ChatController implements Initializable {
 				}
 			}
 			sassiBot = false;
+                        userList.setVisible(true);
 			return;
 		}
 		sassiBot = true;
@@ -275,6 +282,7 @@ public class ChatController implements Initializable {
 	@FXML
 	protected void sendPressed(MouseEvent event) throws InterruptedException {
 		String message = chatBox.getText();
+                
 		if (botCheckBox.isSelected()){
 			Answers sassiAnswer = new Answers();
 			if (message.toLowerCase().contains("why")){
@@ -410,7 +418,6 @@ public class ChatController implements Initializable {
 	public void append(String str, String sender) {
 		String timeStamp;
 		timeStamp = new SimpleDateFormat("HH:mm ").format(Calendar.getInstance().getTime());
-//		chatView.setFont(Font.loadFont("file:resources/fonts/OpenSansEmoji.ttf", 15));
 		chatView.appendText(sender + ":" + "\n");
 		chatView.appendText(str + "\n\n");
 		chatView.selectPositionCaret(chatView.getText().length()-1);
@@ -424,22 +431,24 @@ public class ChatController implements Initializable {
 	 * @param _user 
 	 */	 
 
+
 	public void populateUserList(String _user) throws IllegalStateException {
+        
 		try {
 			if (userList.getItems().contains(_user)) {
 				System.out.println("USERS: " + userList.getItems());
 				System.out.println("ADD: " + _user);
 				userList.getItems().remove(_user);
-				userList.getItems().add(_user);
+				userList.getItems().add(0, _user);
+                                
 			}
 			else {
-				userList.getItems().add(_user);
+				userList.getItems().add(0, _user);
 			}
 		} catch (IllegalStateException e) {
-			return;
 		}
 	}
-
+        
 	public void populateTaskList(String _task){
 		taskList.getItems().add(_task);
 	}
@@ -485,6 +494,5 @@ public class ChatController implements Initializable {
 		}
 	    client.removeTask(removeTask.replace("\n", ""));
 	}
-
 
 }
