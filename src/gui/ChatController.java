@@ -129,6 +129,7 @@ public class ChatController implements Initializable {
 	 */
 	@FXML
 	private void userClicked(MouseEvent event) {
+                userList.getSelectionModel().getSelectedItem();
 		String newConversation = userList.getSelectionModel().getSelectedItem();
 		if (newConversation.equals(this.currentConversation)) {
 			return;
@@ -402,10 +403,10 @@ public class ChatController implements Initializable {
 				System.out.println("USERS: " + userList.getItems());
 				System.out.println("ADD: " + _user);
 				userList.getItems().remove(_user);
-				userList.getItems().add(_user);
+				userList.getItems().add(_user + "\u26AB");
 			}
 			else {
-				userList.getItems().add(_user);
+				userList.getItems().add(_user + "\u26AB");
 			}
 		} catch (IllegalStateException e) {
 			return;
