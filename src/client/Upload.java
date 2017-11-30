@@ -83,7 +83,6 @@ public class Upload implements Runnable{
 				this.displayMessage.append("A file has been uploaded by "+msg.sender+".");
 			}
 
-
 			if(in != null){ in.close(); }
 			if(out != null){ out.close(); }
 			if(connection != null){ connection.close(); }

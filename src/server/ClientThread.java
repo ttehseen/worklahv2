@@ -76,7 +76,7 @@ public class ClientThread extends Thread {
 		for (User user : this.user.getGroupMembers()) {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
 				user.allGroups.add(this.user.currentGroup);
-				message.type = "notifyUser";
+				message.type = "notifyUserTask";
 				if (!user.equals(this.user)) {
 					this.send(message, user.getClientThread());
 				}
@@ -152,7 +152,10 @@ public class ClientThread extends Thread {
 		}
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
+		System.out.println("SENT UPDATE");
+		System.out.println(this.user.currentGroup.chatHistory);
 		send(updateGroupMessage, this);
+		System.out.println("UPDATE SENT");
 	}
 
 	private void updateTaskDeadline(Message message) {
@@ -297,8 +300,6 @@ public class ClientThread extends Thread {
 					this.messageHandler(message);
 				} else if (message.type.equals("goOffline")) {
 					this.user.goOffline();
-				} else if (message.type.equals("uploadFile")) {
-					this.uploadFile(message);
 				} else if (message.type.equals("taskDeadline")) {
 					this.updateTaskDeadline(message);
 				} else if (message.type.equals("removeTask")) {
@@ -354,6 +355,7 @@ public class ClientThread extends Thread {
 	 */
 	public void messageHandler(Message message) throws IOException {
 		this.user.currentGroup.chatHistory.add(message);
+		System.out.println(this.user.currentGroup.chatHistory);
 		for (User user : this.user.getGroupMembers()) {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
 				user.allGroups.add(this.user.currentGroup);
@@ -362,23 +364,6 @@ public class ClientThread extends Thread {
 					this.send(message, user.getClientThread());
 				}
 			} else {
-				if (!user.equals(this.user)) {
-					this.send(message, user.getClientThread());
-				}
-			}
-		}
-	}
-
-	/**
-	 * uploads file attachements to other clients
-	 * @param message
-	 */
-	public void uploadFile (Message message) {
-		for (User user : this.user.getGroupMembers()) {
-			if (!user.equals(this.user)) {
-				this.send(message, user.getClientThread());
-			}
-			else {
 				if (!user.equals(this.user)) {
 					this.send(message, user.getClientThread());
 				}

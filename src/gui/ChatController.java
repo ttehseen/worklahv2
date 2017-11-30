@@ -129,17 +129,21 @@ public class ChatController implements Initializable {
 	 */
 	@FXML
 	private void userClicked(MouseEvent event) {
-                userList.getSelectionModel().getSelectedItem();
+        userList.getSelectionModel().getSelectedItem();
 		String newConversation = userList.getSelectionModel().getSelectedItem();
+//		newConversation.replace("\u26AB", "");
 		if (newConversation.equals(this.currentConversation)) {
 			return;
 		}
 		if (!sassiBot) {
 			conversantName.setText(userList.getSelectionModel().getSelectedItem());
+			System.out.println(this.conversations);
+			System.out.println(newConversation);
 			chatView.setText("");
 			for (ArrayList <String> conversation : this.conversations) {
 				if (newConversation.equals(String.join(", ", conversation))) {
 					client.updateGroup(conversation);
+					System.out.println("UPDATE GROUP");
 				}
 			}
 		}
@@ -403,10 +407,10 @@ public class ChatController implements Initializable {
 				System.out.println("USERS: " + userList.getItems());
 				System.out.println("ADD: " + _user);
 				userList.getItems().remove(_user);
-				userList.getItems().add(_user + "\u26AB");
+				userList.getItems().add(_user);
 			}
 			else {
-				userList.getItems().add(_user + "\u26AB");
+				userList.getItems().add(_user);
 			}
 		} catch (IllegalStateException e) {
 			return;
@@ -447,10 +451,14 @@ public class ChatController implements Initializable {
         taskList.getItems().removeAll();
 		String task_split[] = task.split(" ", 2);
 		String removeTask = task_split[1];
-		if (task.contains(" due by ")) {
+		if (task.contains("due by")) {
 			String[] taskDate = task_split[1].split("\\s+");
+			System.out.println(taskDate);
 		    String end = taskDate[taskDate.length - 3];
-		    removeTask = task_split[1].substring(0,task_split[1].indexOf(end)).trim();
+			System.out.println(end);
+		    removeTask = task_split[1].substring(0, task_split[1].indexOf(end)).trim();
+			System.out.println(removeTask);
+
 		}
 	    client.removeTask(removeTask.replace("\n", ""));
 	}

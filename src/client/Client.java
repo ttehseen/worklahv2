@@ -153,6 +153,8 @@ public class Client extends Thread {
 					this.notifyUser(message);
 				} else if (message.type.equals("downloadFile")) {
 					this.downloadFile(message);
+				} else if (message.type.equals("notifyUserTask")) {
+					this.notifyUserTask(message);
 				}
 			}
 			catch (Exception e) {
