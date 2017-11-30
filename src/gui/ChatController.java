@@ -356,9 +356,17 @@ public class ChatController implements Initializable {
 				append(message, client.username);
 				append(sassiAnswer.getWhat(), "SASSIBOT");
 			}
+                        else if (message.toLowerCase().contains("where")){
+				append(message, client.username);
+				append(sassiAnswer.getWhere(), "SASSIBOT");
+			}
+                        else if (message.toLowerCase().contains("who")){
+				append(message, client.username);
+				append(sassiAnswer.getWho(), "SASSIBOT");
+			}
 			else {
 				append(message, client.username);
-				append("Nice to meet you, but not too nice.", "SASSIBOT");
+				append(sassiAnswer.getOther(), "SASSIBOT");
 			}
 		} else {
 			String catchPhrase = "@task ";
