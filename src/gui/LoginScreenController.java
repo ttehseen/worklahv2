@@ -53,7 +53,13 @@ public class LoginScreenController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		// TODO
 	}    
-
+/**
+ * Login sequence. Loads the chat page for the app. Also contains setters for client and username that 
+ * is used to transfer these two objects to the chat page.
+ * @param event
+ * @throws IOException
+ * @throws ClassNotFoundException 
+ */
 	@FXML
 	private void loginPressed(ActionEvent event) throws IOException, ClassNotFoundException {
 		password= passwordField.getText();
@@ -87,19 +93,15 @@ public class LoginScreenController implements Initializable {
 
 	}
 
-
+/**
+ * Sets previous stage that can be closed by the GUI.
+ * @param stage 
+ */
 	void setPrevStage(Stage stage) {
 		this.prevStage = stage;
 
 	}
 
-	public String getID(){
-		return this.Username.getText();
-	}
-
-
-	public void setID(String _userID){
-		this.userID = _userID;
-	}
+	
 
 }

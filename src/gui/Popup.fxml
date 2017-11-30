@@ -8,7 +8,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="413.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.PopupController">
    <children>
-      <ListView fx:id="onlineList" editable="true" layoutX="72.0" layoutY="58.0" onKeyPressed="#enterPressed" onMouseClicked="#onlineUserSelected" prefHeight="301.0" prefWidth="230.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="71.0" AnchorPane.topAnchor="58.0" />
+      <ListView fx:id="onlineList" editable="true" layoutX="72.0" layoutY="58.0" onKeyPressed="#enterPressed" prefHeight="301.0" prefWidth="230.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="71.0" AnchorPane.topAnchor="58.0" />
       <Text layoutX="140.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="USERS ONLINE" AnchorPane.bottomAnchor="377.689453125" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="141.03173828125" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Avenir Roman" size="13.0" />
