@@ -89,22 +89,6 @@ public class ClientThread extends Thread {
 	}
 
 	/**
-	 * uploads a file to the server
-	 * @param message message to send to the server
-	 * @param c client that we would like to send something to
-	 */
-	public void uploadFile (Message message, ClientThread c) {
-		try {
-			c.out.writeObject(message);
-			c.out.flush();
-		} 
-		catch (IOException ex) {
-			System.out.println("Exception: uploadFile in ClientThread");
-			ex.printStackTrace();
-		}
-	}
-
-	/**
 	 * sends a list of online users to the client to pick from to chat with
 	 */
 	public void sendUsers() {
