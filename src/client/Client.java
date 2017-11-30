@@ -165,6 +165,11 @@ public class Client extends Thread {
 		}
 	}
 	
+	public void notifyUserTask(Message message) {
+		message.aux.remove(this.username);
+		guiController.addConversation(message.aux);
+	}
+	
 	public void loadTaskList(ArrayList <Task> taskList) {
 		guiController.taskList.getItems().clear();
 		System.out.println("RECEIVED");

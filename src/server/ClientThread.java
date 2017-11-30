@@ -77,6 +77,7 @@ public class ClientThread extends Thread {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
 				user.allGroups.add(this.user.currentGroup);
 				message.type = "notifyUserTask";
+				message.setAuxiliary(this.user.currentGroup.groupMemberNames);
 				if (!user.equals(this.user)) {
 					this.send(message, user.getClientThread());
 				}

@@ -11,12 +11,14 @@ public class Message implements Serializable {
 	public String type, sender;
 	public Object content;
 	public ArrayList <String> group;
+	public ArrayList <String> aux;	
 
 	public Message(String _type, String _sender, Object _content) {
 		this.type = _type;
 		this.sender = _sender;
 		this.content = _content;
 		this.group = new ArrayList <String>();
+		this.aux = new ArrayList <String>();
 	}
 
 	@Override
@@ -39,6 +41,10 @@ public class Message implements Serializable {
 	
 	public void setGroup(ArrayList <String> group) {
 		this.group = group;
+	}
+	
+	public void setAuxiliary(ArrayList <String> group) {
+		this.aux = group;
 	}
 	
 }
