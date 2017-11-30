@@ -7,6 +7,7 @@ package gui;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -46,7 +47,7 @@ public class PopupController implements Initializable {
 	@FXML
 	void button2Listener(ActionEvent event) {
 		List<String> showing = onlineList.getSelectionModel().getSelectedItems();
-		if (!chatController.currentConversation.equals(showing)) {
+		if (!this.checkMembers(new ArrayList<String>(showing), this.chatController.conversations)) {
 			client.updateGroup(new ArrayList<String>(showing));
 			client.addConversation(new ArrayList<String>(showing));
 			final Node source = (Node) event.getSource();
@@ -63,7 +64,7 @@ public class PopupController implements Initializable {
 	void enterPressed(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER){
 			List<String> showing = onlineList.getSelectionModel().getSelectedItems();
-			if (!chatController.currentConversation.equals(showing)) {
+			if (!this.checkMembers(new ArrayList<String>(showing), this.chatController.conversations)) {
 				client.updateGroup(new ArrayList<String>(showing));
 				client.addConversation(new ArrayList<String>(showing));
 				final Node source = (Node) event.getSource();
@@ -75,6 +76,18 @@ public class PopupController implements Initializable {
 				this.chatController.greenCircle.setVisible(true);
 			}
 		}
+	}
+	
+	public boolean checkMembers(ArrayList <String> group1, ArrayList <ArrayList <String>> group2) {
+		boolean flag = false;
+		for (ArrayList <String> conversation : group2) {
+			Collections.sort(group1);
+			Collections.sort(conversation);
+			if (conversation.equals(group1)) {
+				flag = true;
+			}
+		}
+		return(flag);
 	}
 	
 	void setChatController(ChatController _chatController) {

@@ -109,6 +109,9 @@ public class ClientThread extends Thread {
 	 * @param c client thread that we want to reach
 	 */
 	public void send(Message message, ClientThread c) {
+		if (c.user.onlineStatus == false) {
+			return;
+		}
 		synchronized (this) {
 			try {
 				c.out.reset();
@@ -300,6 +303,9 @@ public class ClientThread extends Thread {
 					this.updateTaskDeadline(message);
 				} else if (message.type.equals("removeTask")) {
 					this.removeTask(message);
+				} else if (message.type.equals("uploadingFile")) {
+					message.type = "downloadFile";
+					uploadHandler(message);
 				}
 			}
 			catch (Exception e) {
@@ -311,6 +317,31 @@ public class ClientThread extends Thread {
 					e1.printStackTrace();
 				}
 				break;
+			}
+		}
+	}
+	
+	/**
+	 * handles all downloads and uploads sent from a client and decides whether to notify a user or
+	 * send the download to the user main chatbox
+	 * @param message message that we would like to send to other clients
+	 * @throws IOException
+	 */
+	public void uploadHandler(Message message) throws IOException {
+		this.user.currentGroup.chatHistory.add(message);
+		for (User user : this.user.getGroupMembers()) {
+			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
+				user.allGroups.add(this.user.currentGroup);
+				message.type = "notifyUser";
+				message.content = message.sender + " would like to share a file with you!\n";
+				if (!user.equals(this.user)) {
+					this.send(message, user.getClientThread());
+				}
+			} else {
+				if (!user.equals(this.user)) {
+					message.type = "downloadFile";
+					this.send(message, user.getClientThread());
+				}
 			}
 		}
 	}

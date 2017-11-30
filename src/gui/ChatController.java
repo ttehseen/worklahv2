@@ -445,7 +445,13 @@ public class ChatController implements Initializable {
         chatView.setText("");
         taskList.getItems().removeAll();
 		String task_split[] = task.split(" ", 2);
-		client.removeTask(task_split[1].replace("\n", ""));
+		String removeTask = task_split[1];
+		if (task.contains(" due by ")) {
+			String[] taskDate = task_split[1].split("\\s+");
+		    String end = taskDate[taskDate.length - 3];
+		    removeTask = task_split[1].substring(0,task_split[1].indexOf(end)).trim();
+		}
+	    client.removeTask(removeTask.replace("\n", ""));
 	}
 
 
