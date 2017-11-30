@@ -75,13 +75,16 @@ public class ClientThread extends Thread {
 		this.user.currentGroup.tasks.add(newTask);
 		for (User user : this.user.getGroupMembers()) {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
+				System.out.println("not IN GROUP");
 				user.allGroups.add(this.user.currentGroup);
 				message.type = "notifyUserTask";
+				message.setAuxiliary(this.user.currentGroup.groupMemberNames);
 				if (!user.equals(this.user)) {
 					this.send(message, user.getClientThread());
 				}
 			} else {
 				if (!user.equals(this.user)) {
+					System.out.println("SENT TASK UPDATE");
 					this.send(message, user.getClientThread());
 				}
 			}

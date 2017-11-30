@@ -91,7 +91,7 @@ public class Client extends Thread {
 	public void uploadFile(File pathToFile) {
 		Message newMessage = new Message("uploadingFile", this.username, pathToFile);
 		send(newMessage);
-		Upload startUpload = new Upload("127.0.0.1", 8080, pathToFile, this.guiController);
+		Upload startUpload = new Upload("127.0.0.1", 8888, pathToFile, this.guiController);
 		startUpload.run();
 	}
 	
@@ -129,6 +129,7 @@ public class Client extends Thread {
 				if (message.type.equals("message")) {
 					guiController.append((String) message.content, message.sender);;
 				} else if (message.type.equals("task")) {
+					System.out.println("SENT TASK UPDATE");
 					System.out.println(message);
 					String newTask = (String) message.content;
 					guiController.taskList.getItems().add("@" + message.group.get(0) + ": " + newTask + "\n");
@@ -163,6 +164,11 @@ public class Client extends Thread {
 				break;
 			}
 		}
+	}
+	
+	public void notifyUserTask(Message message) {
+		message.aux.remove(this.username);
+		guiController.addConversation(message.aux);
 	}
 	
 	public void loadTaskList(ArrayList <Task> taskList) {
