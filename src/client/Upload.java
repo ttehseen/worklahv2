@@ -1,59 +1,46 @@
 package client;
 
-import gui.GuiStart;
-import messages.Message;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import gui.ChatController;
 
-/*
- *			For GUI, if this helps. Its a fairly basic implementation of a FileChooser in Java FX.
- *
- *			import javafx.stage.FileChooser;
- * 
- *          openButton.setOnAction(
- *          new EventHandler<ActionEvent>() {
- *              @Override
- *              public void handle(final ActionEvent e){
- *              	File file =  fileChooser.showOpenDialog(gui);
- *              	if (file != null) {
- *              		openFile(file);
- *              	}
- *              }
- *			});
 
-        	openMultipleButton.setOnAction(
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    List<File> list =
-                        fileChooser.showOpenMultipleDialog(stage);
-                    if (list != null) {
-                        for (File file : list) {
-                            openFile(file);
-                        }
-                    }
-                }
-            });
- * 
+/**
+ * Thread class to handle the uploading of a file to another client
+ * @author Geoffrey
  */
+public class Upload implements Runnable {
 
-public class Upload implements Runnable{
-
-	private String ip;
-	private int port;
+	/**
+	 * connection that the client should connect to
+	 */
 	private Socket connection;
+	/**
+	 * file input stream to read from
+	 */
 	public FileInputStream in;
+	/**
+	 * output stream to the client
+	 */
 	public OutputStream out;
+	/**
+	 * File we would like to upload
+	 */
 	public File file;
+	/**
+	 * GUI controller to print succcess status to
+	 */
 	public ChatController gui;
 
+	/**
+	 * Instantiator for an upload object
+	 * @param ip IP address to connect to
+	 * @param port port to connect to
+	 * @param filepath filepath of the file we would like to upload
+	 * @param screen GUI controller to print succcess status to
+	 */
 	public Upload(String ip, int port, File filepath, ChatController screen){
-		super();
 		try {
 			this.file = filepath; 
 			this.gui = screen;
@@ -66,28 +53,32 @@ public class Upload implements Runnable{
 		}
 	}
 
+	/* 
+	 * Method called to run this thread
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		try {       
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[16384];
 			int count;
-
-			while ((count = in.read(buffer)) >= 0){
+			while ((count = in.read(buffer)) >= 0) {
 				out.write(buffer, 0, count);
 			}
 			out.flush();
 
-			Message msg = (Message) in.readObject();
-
-			if (msg.type.equals("upload")) {
-				this.displayMessage.append("A file has been uploaded by "+msg.sender+".");
+			if (in != null) { 
+				in.close(); 
 			}
-
-			if(in != null){ in.close(); }
-			if(out != null){ out.close(); }
-			if(connection != null){ connection.close(); }
+			if (out != null) { 
+				out.close(); 
+			}
+			if (connection != null) {
+				connection.close(); 
+			}
 		}
 		catch (Exception ex) {
+			this.gui.chatView.appendText("........\nUpload Failure. Please try again!\n\n");
 			System.out.println("Exception [Upload : run()]");
 			ex.printStackTrace();
 		}

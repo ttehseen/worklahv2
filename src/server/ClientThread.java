@@ -24,18 +24,22 @@ public class ClientThread extends Thread {
 	 * Socket for the user client
 	 */
 	private Socket client;
+	
 	/**
 	 * Server variable with the database
 	 */
 	private Server server;
+	
 	/**
 	 * stream that we will be writing to
 	 */
 	private ObjectOutputStream out;
+	
 	/**
 	 * stream that will be reading from
 	 */
 	private ObjectInputStream in;
+	
 	/**
 	 * User that has logged in
 	 */
@@ -161,6 +165,10 @@ public class ClientThread extends Thread {
 		System.out.println("UPDATE SENT");
 	}
 
+	/**
+	 * Deals with a request to update a task deadline
+	 * @param message message request to change a task deadline
+	 */
 	private void updateTaskDeadline(Message message) {
 		String _task = ((ArrayList <String>) message.content).get(0);
 		String deadline = ((ArrayList <String>) message.content).get(1);
@@ -191,6 +199,10 @@ public class ClientThread extends Thread {
 		}
 	}
 	
+	/**
+	 * Deals with the removal of a task from the current group task list
+	 * @param message request to delete the task
+	 */
 	private void removeTask(Message message) {
 		String _task = (String) message.content;
 		System.out.println(_task);
@@ -337,7 +349,6 @@ public class ClientThread extends Thread {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
 				user.allGroups.add(this.user.currentGroup);
 				message.type = "notifyUser";
-				message.content = message.sender + " would like to share a file with you!\n";
 				if (!user.equals(this.user)) {
 					this.send(message, user.getClientThread());
 				}
