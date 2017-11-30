@@ -59,6 +59,11 @@ Instructions for logging out:
 To logout, click the logout button on the bottom left of the application. 
 
 
+Final Instructions:
+
+Please kill the server process from the console if you would like to delete the database/start a new trial run!
+
+
 
 ## How does worklah actually work?
 
