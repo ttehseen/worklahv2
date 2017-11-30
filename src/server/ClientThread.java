@@ -149,6 +149,7 @@ public class ClientThread extends Thread {
 		}
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
+		System.out.println(this.user.currentGroup.chatHistory);
 		send(updateGroupMessage, this);
 	}
 
@@ -167,11 +168,13 @@ public class ClientThread extends Thread {
 	
 	private void removeTask(Message message) {
 		String _task = (String) message.content;
+		Task foundTask = new Task(null, null);
 		for (Task task : this.user.currentGroup.tasks) {
 			if (task.task.equals(_task)) {
-				this.user.currentGroup.tasks.remove(task);
+				foundTask = task;
 			}
 		}
+		this.user.currentGroup.tasks.remove(foundTask);
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
 		send(updateGroupMessage, this);
@@ -272,6 +275,7 @@ public class ClientThread extends Thread {
 			catch (Exception e) {
 				try {
 					this.closeConnection();
+					e.printStackTrace();
 				} catch (IOException e1) {
 					System.out.println("Exception ChatClient sendToServer()");
 					e1.printStackTrace();

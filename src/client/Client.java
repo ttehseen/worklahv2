@@ -22,7 +22,7 @@ public class Client extends Thread {
 	private ObjectInputStream in;
 	private ChatController guiController;
 	private PopupController popupController;
-	private String username;
+	public String username;
 	private String password;
 
 	public Client(String ip, int p, ChatController _guiController, String _username, String _password) throws ClassNotFoundException {
@@ -116,14 +116,10 @@ public class Client extends Thread {
 			try {
 				Message message = (Message) in.readObject();
 				if (message.type.equals("message")) {
-					this.displayMessage("[" + message.sender + "] : " + (String) message.content + "\n");
+					guiController.append((String) message.content, message.sender);;
 				} else if (message.type.equals("task")) {
-					Task newTask = (Task) message.content;
-					if (newTask.deadline.equals("")) {
-						guiController.taskList.getItems().add("@" + newTask.user + ": " + newTask.task + "\n");
-					} else {
-						guiController.taskList.getItems().add("@" + newTask.user + ": " + newTask.task + " due by " + newTask.deadline.toString() + "\n");
-					}
+					String newTask = (String) message.content;
+					guiController.taskList.getItems().add("@" + message.group.get(0) + ": " + newTask + "\n");
 				} else if (message.type.equals("userList")) {
 					ArrayList <String> userList = (ArrayList <String>) message.content;
 					for (String _username : userList) {
@@ -146,6 +142,7 @@ public class Client extends Thread {
 			}
 			catch (Exception e) {
 				this.closeConnection();
+				e.printStackTrace();
 				break;
 			}
 		}
@@ -164,7 +161,7 @@ public class Client extends Thread {
 	
 	public void loadHistory(ArrayList <Message> chatHistory) {
 		for (Message message : chatHistory) {
-				guiController.append((String) message.content + "\n");
+				guiController.append((String) message.content, message.sender);
 			
 		}
 	}
@@ -176,14 +173,6 @@ public class Client extends Thread {
 	public void notifyUser(Message message) {
 		message.group.remove(this.username);
 		guiController.addConversation(message.group);
-	}
-
-	public void displayMessage(String message) {
-		guiController.append(message);
-	}
-
-	public void displayTask(String message) {
-		guiController.append(message);
 	}
 
 	public void send(Message message) {
