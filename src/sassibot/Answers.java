@@ -2,11 +2,23 @@ package sassibot;
 
 import java.util.Random;
 
+/**
+ * Database of answers for Sassibot
+ * @author Geoffrey
+ */
 public class Answers {
+	
+	/**
+	 * Answers instantiator
+	 */
 	public Answers() { 
-
+		;
 	}
 
+	/**
+	 * Responses to what questions
+	 * @return answer to what question
+	 */
 	public String getWhat() {
 
 		String[] whatArray = new String[]{
@@ -23,7 +35,11 @@ public class Answers {
 		int index = random.nextInt(whatArray.length);
 		return whatArray[index];	
 	}
-
+	
+	/**
+	 * Responses to why questions
+	 * @return answer to why question
+	 */
 	public String getWhy() {
 
 		String[] whyArray = new String[]{"Because the heavens told me to.",
@@ -41,7 +57,11 @@ public class Answers {
 		int index = random.nextInt(whyArray.length);
 		return whyArray[index];
 	}
-
+	
+	/**
+	 * Responses to how questions
+	 * @return answer to how question
+	 */
 	public String getHow() {	
 		String[] howArray = new String[]{
 				"I'm pretty easygoing, actually.",
@@ -59,6 +79,10 @@ public class Answers {
 		return howArray[index];	
 	}
 
+	/**
+	 * Responses to where questions
+	 * @return answer to where question
+	 */
 	public String getWhere() {	
 		String[] whereArray = new String[]{
 				"How should I know? Am I your mother?",
@@ -77,6 +101,10 @@ public class Answers {
 		return whereArray[index];	
 	}
 
+	/**
+	 * Responses to who questions
+	 * @return answer to who question
+	 */
 	public String getWho() {	
 		String[] whoArray = new String[]{
 				"That's none of your business.",
@@ -94,6 +122,10 @@ public class Answers {
 		return whoArray[index];	
 	}
 
+	/**
+	 * Responses to other questions
+	 * @return answer to other question
+	 */
 	public String getOther() {	
 		String[] otherArray = new String[]{
 				"You're actually not that bad a person. Maybe ask me a question too?",
