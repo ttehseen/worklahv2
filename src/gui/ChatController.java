@@ -29,6 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuItem;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -78,6 +79,9 @@ public class ChatController implements Initializable {
 	protected Ellipse greenCircle;
 	@FXML
 	private Button emojiButton;
+        @FXML
+        private MenuItem deletePressed;
+
 	
 	private Client client;
 	
@@ -101,7 +105,10 @@ public class ChatController implements Initializable {
 		 this.conversations = new ArrayList<ArrayList<String>>();
 		 this.currentConversation = "";
 	 }
-	 
+	 /**
+         * Setters for the Client and UserID.
+         * @param _client 
+         */
 	 protected void setClient(Client _client) {
 		 client = _client;
 	 }
@@ -109,7 +116,10 @@ public class ChatController implements Initializable {
 	 protected void setUserID(String _userID) {
 		 userName.setText(_userID);
 	 }
-
+/**
+ * Method that listens on a mouse click on the UsersList to open up the conversation in the text box.
+ * @param event 
+ */
 	 @FXML
 	 private void userClicked(MouseEvent event) {
 		 String newConversation = userList.getSelectionModel().getSelectedItem();
@@ -128,22 +138,21 @@ public class ChatController implements Initializable {
 		 greenCircle.setVisible(true);
 	 }
 
-	 @FXML
-	 private void taskDragged(MouseEvent event) {
-		 int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
-		 String task = taskList.getItems().get(selectedIndex);
-		 taskList.getSelectionModel().clearSelection();
-		 taskList.getItems().remove(task);
-		 task = task.replace("@task ", "");
-		 String task_split[] = task.split(" ", 2);
-		 client.removeTask(task_split[1].replace("\n", ""));
-	 }
-
+/**
+ * We were exhaustive in our listeners to make sure that we get have all the resources we require for an
+ * interactive GUI.
+ * @param event 
+ */ 
 	 @FXML
 	 private void taskClicked(MouseEvent event) {
 
 	 }
-
+/**
+ * Opens up a popup window that has references to the userList. It receives the list of users online
+ * and can be used to add them to the userlist for communication.
+ * @param event
+ * @throws IOException 
+ */   
 	 @FXML
 	 void newChatPressed(MouseEvent event) throws IOException {
 
@@ -167,7 +176,10 @@ public class ChatController implements Initializable {
 		 stage.show();
 	 
 	 }
-	 
+	 /**
+         * Listeners that send emojis.
+         * @param event 
+         */ 
 	 @FXML
 	 void emoji1selected(MouseEvent event) {
 		 String message="\u2615";
@@ -195,19 +207,32 @@ public class ChatController implements Initializable {
 		 client.sendMessageToGroup(message);
 		 append(message+"\n");
 	 }        
-
+   /**
+         * Listener for Sassibot. Checks if is the switch is on. If it is
+         * then it resets the ChatBox.
+         * @param event 
+         */
 	 @FXML
 	 void botChecked(MouseEvent event) {
 		 chatView.setText("");
 
 	 }
-
+	/**
+         * Exits the system.
+         * @param event 
+         */
 	 @FXML
 	 void logoutPressed(ActionEvent event) {
 		 client.goOffline();
 		 System.exit(0);
 	 }
-
+  /**
+         * 
+         * @param Main
+         * @throws InterruptedException 
+         * Main listener for the class. Checks firstly if the sassibot switch is on. If it is, it talks to it. If not, it checks if the user wants
+         * to appoint a task. If it does, it will add the sent text to the task pane. If not, it adds it sends it over to the chat group selected.
+         */
 	 @FXML
 	 protected void sendPressed(MouseEvent event) throws InterruptedException {
 		 String message = chatBox.getText();
@@ -247,7 +272,10 @@ public class ChatController implements Initializable {
 
 		 }
 	 }
-
+/**
+ * Opens up a pop-up calendar that gets the date and appends it the selected task.
+ * @param event 
+ */
 	 @FXML
 	 void dateSelected(ActionEvent event) {
 		 int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
@@ -259,7 +287,11 @@ public class ChatController implements Initializable {
 		 String task_split[] = task.split(" ", 2);
 		 client.setTaskDeadline(task_split[1].replace("\n", ""), selectedDate);
 	 }
-	 
+/**
+  * Same as sendPressed above, in case the user wants to use the Enter Key.
+  * @param event
+  * @throws InterruptedException 
+  */	 
 	 @FXML
 	 private void enterPressedChat(ActionEvent event) throws InterruptedException {
 		 String message = chatBox.getText();
@@ -298,14 +330,20 @@ public class ChatController implements Initializable {
 
 		 }
 	 }
-	 
+  /*
+        Opens up a dialog box to attach files.
+        
+        */	 
 	 @FXML
 	 void attachButtonPressed(MouseEvent event) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Attachment");
             fileChooser.showOpenDialog(stage);
 	 }
-
+  /**
+        * Append function to add text to the chat interface. Adds a time stamp every time.
+        * @param str 
+        */
 	 public void append(String str) {
 		 String timeStamp;
 		 timeStamp = new SimpleDateFormat("HH:mm ").format(Calendar.getInstance().getTime());
@@ -315,7 +353,12 @@ public class ChatController implements Initializable {
 		 chatBox.setText("");
 	 }
 	 
-	 
+/**
+ * Function to populate userList with new users- individuals and groups. Checks if
+ * the user already exists. If it does, it updates it to the top of the file(signalling a new 
+ * message). If not, it adds it.
+ * @param _user 
+ */	 
 
 	 public void populateUserList(String _user) throws IllegalStateException {
 		 try {
@@ -341,5 +384,20 @@ public class ChatController implements Initializable {
 		 conversations.add(conversation);
 		 populateUserList(String.join(", ", conversation));
 	 }
-
+         /**
+ * Method that deletes a task by rightclicking and pressing on it.
+ * @param event 
+ */
+         @FXML
+         void deleteSelected(ActionEvent event) {
+         int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
+		 String task = taskList.getItems().get(selectedIndex);
+		 taskList.getSelectionModel().clearSelection();
+		 taskList.getItems().remove(task);
+		 task = task.replace("@task ", "");
+		 String task_split[] = task.split(" ", 2);
+		 client.removeTask(task_split[1].replace("\n", ""));
+          }
+  
+        
 }
