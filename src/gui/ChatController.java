@@ -388,8 +388,8 @@ public class ChatController implements Initializable {
                 File file = fileChooser.showOpenDialog(stage);
                 if (file != null) {
                         fileAbsolutePath=file.getAbsolutePath();
-                        return fileAbsolutePath;
-//                        System.out.println(fileAbsolutePath);
+                        System.out.println(file);
+                        client.uploadFile(file);
                     }
 	return null;}
         private Desktop desktop = Desktop.getDesktop();
