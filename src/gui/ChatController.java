@@ -43,6 +43,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import messages.Message;
 /**
  * FXML Controller class
  *
@@ -385,24 +386,17 @@ public class ChatController implements Initializable {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Attachment");
 		fileChooser.showOpenDialog(stage);
-                File file = fileChooser.showOpenDialog(stage);
-                if (file != null) {
-                        fileAbsolutePath=file.getAbsolutePath();
-                        System.out.println(file);
-                        client.uploadFile(file);
-                    }
-	return null;}
-        private Desktop desktop = Desktop.getDesktop();
-        private void openFile(File file) {
-        try {
-            desktop.open(file);
-        } catch (IOException ex) {
-            Logger.getLogger(
-                ChatController.class.getName()).log(
-                    Level.SEVERE, null, ex
-                );
-        }
-    }
+		File file = fileChooser.showOpenDialog(stage);
+		if (file != null) {
+			fileAbsolutePath = file.getAbsolutePath();
+			String path = file.toString().substring(file.toString().lastIndexOf("/") + 1);
+			this.append(client.username + " would like to share '" + path + "' with you!", client.username);
+			System.out.println(file);
+			client.uploadFile(file);
+		}
+		return null;
+	}
+	
 	/**
 	 * Append function to add text to the chat interface. Adds a time stamp every time.
 	 * @param str 
