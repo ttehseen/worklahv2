@@ -39,7 +39,9 @@ import javafx.stage.Stage;
  * @author student
  */
 public class ChatController implements Initializable {
-
+/**
+ * Contains the injected GUI components from the FXML files.
+ */
 	@FXML
 	private ListView<String> userList;
 
@@ -81,11 +83,18 @@ public class ChatController implements Initializable {
 	private Button emojiButton;
 	@FXML
 	private MenuItem deletePressed;
-
+/**
+ * Fields that are not imported from the FXML.
+ * Client: The client that makes a connection to the server. This is imported from the login page.
+ * userId: Also imported from the login page. It is used to update the name on the chatPage and in communication with the server.
+ * scene: JavaFX Scene declaration.
+ * stage: JavaFX Stage declaration.
+ * conversations: A list of list containing all the conversations.
+ * currentCoversation: The current conversation.
+ * sassiBot: A switch for SassiBot. True means SassiBot mode is on. False means SassiBot mode is off.
+ */
 	private Client client;
-
 	protected String userID;
-
 	Stage prevStage;
 	private Scene scene;
 	private Stage stage;
@@ -341,9 +350,17 @@ public class ChatController implements Initializable {
 				append(message, client.username);
 				append(sassiAnswer.getWhat(), "SASSIBOT");
 			}
+                        else if (message.toLowerCase().contains("where")){
+				append(message, client.username);
+				append(sassiAnswer.getWhere(), "SASSIBOT");
+			}
+                        else if (message.toLowerCase().contains("who")){
+				append(message, client.username);
+				append(sassiAnswer.getWho(), "SASSIBOT");
+			}
 			else {
 				append(message, client.username);
-				append("Nice to meet you, but not too nice.", "SASSIBOT");
+				append(sassiAnswer.getOther(), "SASSIBOT");
 			}
 		} else {
 			String catchPhrase = "@task ";
