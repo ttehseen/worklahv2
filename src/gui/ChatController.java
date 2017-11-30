@@ -8,10 +8,7 @@ package gui;
 import sassibot.Answers;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import client.Client;
-import java.awt.Desktop;
-import static java.awt.SystemColor.desktop;
 import java.io.File;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -24,29 +21,17 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.css.PseudoClass;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.shape.Ellipse;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import messages.Message;
 
 /**
  * FXML Controller class
@@ -57,7 +42,7 @@ public class ChatController implements Initializable {
 
 	@FXML
 	private ListView<String> userList;
-        
+
 	@FXML
 	public ListView<String> taskList;
 	@FXML
@@ -107,7 +92,6 @@ public class ChatController implements Initializable {
 	public ArrayList<ArrayList<String>> conversations;
 	String currentConversation;
 	boolean sassiBot;
-    private String fileAbsolutePath;
 
 	/**
 	 * Initializes the controller class.
@@ -116,15 +100,15 @@ public class ChatController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		userName.setText(userID);
 	}    
-/**
- * Initializes conversations.
- */
+	/**
+	 * Initializes conversations.
+	 */
 	protected void initialiseConversations() {
 		this.conversations = new ArrayList<ArrayList<String>>();
 		this.sassiBot = false;
 		this.currentConversation = "";
 	}
-	
+
 	/**
 	 * Setters for the Client and UserID.
 	 * @param _client 
@@ -136,16 +120,16 @@ public class ChatController implements Initializable {
 	protected void setUserID(String _userID) {
 		userName.setText(_userID);
 	}
-	
+
 	/**
 	 * Method that listens on a mouse click on the UsersList to open up the conversation in the text box.
 	 * @param event 
 	 */
 	@FXML
 	private void userClicked(MouseEvent event) {
-        userList.getSelectionModel().getSelectedItem();
+		userList.getSelectionModel().getSelectedItem();
 		String newConversation = userList.getSelectionModel().getSelectedItem();
-//		newConversation.replace("\u26AB", "");
+		//		newConversation.replace("\u26AB", "");
 		if (newConversation.equals(this.currentConversation)) {
 			return;
 		}
@@ -168,8 +152,8 @@ public class ChatController implements Initializable {
 		}
 	}
 
-	
-	
+
+
 	/**
 	 * Opens up a popup window that has references to the userList. It receives the list of users online
 	 * and can be used to add them to the userlist for communication.
@@ -199,7 +183,7 @@ public class ChatController implements Initializable {
 		stage.show();
 
 	}
-	
+
 	/**
 	 * Listeners that send emojis.
 	 * @param event 
@@ -231,7 +215,7 @@ public class ChatController implements Initializable {
 		client.sendMessageToGroup(message);
 		append(message+"\n", client.username);
 	}     
-	
+
 	/**
 	 * Listener for Sassibot. Checks if is the switch is on. If it is
 	 * then it resets the ChatBox.
@@ -239,7 +223,7 @@ public class ChatController implements Initializable {
 	 */
 	@FXML
 	void botChecked(MouseEvent event) {
-                userList.setVisible(false);
+		userList.setVisible(false);
 		chatView.setText("");
 		if (	sassiBot) {
 			for (ArrayList <String> conversation : this.conversations) {
@@ -248,7 +232,7 @@ public class ChatController implements Initializable {
 				}
 			}
 			sassiBot = false;
-                        userList.setVisible(true);
+			userList.setVisible(true);
 			return;
 		}
 		sassiBot = true;
@@ -256,7 +240,7 @@ public class ChatController implements Initializable {
 		this.conversantImage.setVisible(true);
 		this.greenCircle.setVisible(false);
 	}
-	
+
 	/**
 	 * Disconnects and exits the program.
 	 * @param event 
@@ -266,7 +250,7 @@ public class ChatController implements Initializable {
 		client.goOffline();
 		System.exit(0);
 	}
-	
+
 	/**
 	 * 
 	 * @param Main
@@ -277,7 +261,7 @@ public class ChatController implements Initializable {
 	@FXML
 	protected void sendPressed(MouseEvent event) throws InterruptedException {
 		String message = chatBox.getText();
-                
+
 		if (botCheckBox.isSelected()){
 			Answers sassiAnswer = new Answers();
 			if (message.toLowerCase().contains("why")){
@@ -325,7 +309,7 @@ public class ChatController implements Initializable {
 		String selectedDate = dateSelector.getValue().toString();
 		if (task.contains(" due by ")) {
 			task = task.substring(0, task.lastIndexOf(" ")) + " " + selectedDate;
-			
+
 		} else {
 			taskList.getItems().add(selectedIndex, task +" due by " + selectedDate );
 			taskList.getItems().remove(selectedIndex + 1);
@@ -334,7 +318,7 @@ public class ChatController implements Initializable {
 		String task_split[] = task.split(" ", 2);
 		client.setTaskDeadline(task_split[1].replace("\n", ""), selectedDate);
 	}
-	
+
 	/**
 	 * Same as sendPressed above, in case the user wants to use the Enter Key.
 	 * @param event
@@ -390,7 +374,6 @@ public class ChatController implements Initializable {
 		fileChooser.showOpenDialog(stage);
 		File file = fileChooser.showOpenDialog(stage);
 		if (file != null) {
-			fileAbsolutePath = file.getAbsolutePath();
 			String path = file.toString().substring(file.toString().lastIndexOf("/") + 1);
 			this.append(client.username + " would like to share '" + path + "' with you!", client.username);
 			System.out.println(file);
@@ -398,14 +381,12 @@ public class ChatController implements Initializable {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Append function to add text to the chat interface. Adds a time stamp every time.
 	 * @param str 
 	 */
 	public void append(String str, String sender) {
-		String timeStamp;
-		timeStamp = new SimpleDateFormat("HH:mm ").format(Calendar.getInstance().getTime());
 		chatView.appendText(sender + ":" + "\n");
 		chatView.appendText(str + "\n\n");
 		chatView.selectPositionCaret(chatView.getText().length()-1);
@@ -421,14 +402,14 @@ public class ChatController implements Initializable {
 
 
 	public void populateUserList(String _user) throws IllegalStateException {
-        
+
 		try {
 			if (userList.getItems().contains(_user)) {
 				System.out.println("USERS: " + userList.getItems());
 				System.out.println("ADD: " + _user);
 				userList.getItems().remove(_user);
 				userList.getItems().add(0, _user);
-                                
+
 			}
 			else {
 				userList.getItems().add(0, _user);
@@ -436,17 +417,17 @@ public class ChatController implements Initializable {
 		} catch (IllegalStateException e) {
 		}
 	}
-        /**
-         * Method to populate the Tasks. Takes in a string and adds it to the string of tasks.
-         * @param _task 
-         */
+	/**
+	 * Method to populate the Tasks. Takes in a string and adds it to the string of tasks.
+	 * @param _task 
+	 */
 	public void populateTaskList(String _task){
 		taskList.getItems().add(_task);
 	}
-/**
- * Method to add to the conversations.
- * @param _conversation 
- */
+	/**
+	 * Method to add to the conversations.
+	 * @param _conversation 
+	 */
 	public void addConversation(ArrayList <String> _conversation) {
 		for (ArrayList <String> conversation : this.conversations) {
 			if (checkMembers(conversation, _conversation)) {
@@ -456,12 +437,12 @@ public class ChatController implements Initializable {
 		conversations.add(_conversation);
 		populateUserList(String.join(", ", _conversation));
 	}
-/**
- * Method to check the Members of a group.
- * @param group1
- * @param group2
- * @return 
- */	
+	/**
+	 * Method to check the Members of a group.
+	 * @param group1
+	 * @param group2
+	 * @return 
+	 */	
 	public boolean checkMembers(ArrayList <String> group1, ArrayList <String> group2) {
 		Collections.sort(group1);
 		Collections.sort(group2);
@@ -478,20 +459,20 @@ public class ChatController implements Initializable {
 		String task = taskList.getItems().get(selectedIndex);
 		taskList.getSelectionModel().clearSelection();
 		taskList.getItems().remove(task);
-                chatView.setText("");
-                taskList.getItems().removeAll();
+		chatView.setText("");
+		taskList.getItems().removeAll();
 		String task_split[] = task.split(" ", 2);
 		String removeTask = task_split[1];
 		if (task.contains("due by")) {
 			String[] taskDate = task_split[1].split("\\s+");
 			System.out.println(taskDate);
-		    String end = taskDate[taskDate.length - 3];
+			String end = taskDate[taskDate.length - 3];
 			System.out.println(end);
-		    removeTask = task_split[1].substring(0, task_split[1].indexOf(end)).trim();
+			removeTask = task_split[1].substring(0, task_split[1].indexOf(end)).trim();
 			System.out.println(removeTask);
 
 		}
-	    client.removeTask(removeTask.replace("\n", ""));
+		client.removeTask(removeTask.replace("\n", ""));
 	}
 
 }

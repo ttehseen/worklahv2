@@ -21,7 +21,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -40,10 +39,10 @@ public class PopupController implements Initializable {
 	protected ListView<String> primaryUserList;
 
 	/**
-         * The next two listener methods take the selected users from the online list and add them to the user list on the
-         * previous page.
-         * @param event 
-         */
+	 * The next two listener methods take the selected users from the online list and add them to the user list on the
+	 * previous page.
+	 * @param event 
+	 */
 	@FXML
 	void button2Listener(ActionEvent event) {
 		List<String> showing = onlineList.getSelectionModel().getSelectedItems();
@@ -78,11 +77,11 @@ public class PopupController implements Initializable {
 		}
 	}
 	/**
-         * Method to check the Members of a conversation.
-         * @param group1
-         * @param group2
-         * @return 
-         */
+	 * Method to check the Members of a conversation.
+	 * @param group1
+	 * @param group2
+	 * @return 
+	 */
 	public boolean checkMembers(ArrayList <String> group1, ArrayList <ArrayList <String>> group2) {
 		boolean flag = false;
 		for (ArrayList <String> conversation : group2) {
@@ -94,7 +93,7 @@ public class PopupController implements Initializable {
 		}
 		return(flag);
 	}
-	
+
 	void setChatController(ChatController _chatController) {
 		this.chatController = _chatController;
 	}
