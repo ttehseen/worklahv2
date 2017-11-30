@@ -68,12 +68,14 @@ public class Client extends Thread {
 		ArrayList <String> recipients = new ArrayList <String>(); 
 		recipients.add(recipient);
 		newMessage.setGroup(recipients);
+		System.out.println(newMessage);
 		send(newMessage);
 	}
 	
 	public void removeTask(String task) {
 		Message newMessage = new Message("removeTask", this.username, task);
 		send(newMessage);
+		System.out.println((String) newMessage.content);
 	}
 	
 	public void setTaskDeadline(String task, String selectedDate) {
@@ -81,6 +83,7 @@ public class Client extends Thread {
 		taskInformation.add(task);
 		taskInformation.add(selectedDate);
 		Message newMessage = new Message("taskDeadline", this.username, taskInformation);
+		System.out.println(newMessage);
 		send(newMessage);
 	}
 	
@@ -118,6 +121,7 @@ public class Client extends Thread {
 				if (message.type.equals("message")) {
 					guiController.append((String) message.content, message.sender);;
 				} else if (message.type.equals("task")) {
+					System.out.println(message);
 					String newTask = (String) message.content;
 					guiController.taskList.getItems().add("@" + message.group.get(0) + ": " + newTask + "\n");
 				} else if (message.type.equals("userList")) {
@@ -128,6 +132,7 @@ public class Client extends Thread {
 				} else if (message.type.equals("updateGroup")) {
 					ArrayList <Task> taskList = ((Group) message.content).tasks;
 					ArrayList <Message> chatHistory = ((Group) message.content).chatHistory;
+					System.out.println("UPDATE MESSAGE RECEIVED");
 					this.loadHistory(chatHistory);
 					this.loadTaskList(taskList);
 				} else if (message.type.equals("loadUserGroups")) {
@@ -149,6 +154,10 @@ public class Client extends Thread {
 	}
 	
 	public void loadTaskList(ArrayList <Task> taskList) {
+		guiController.taskList.getItems().clear();
+		System.out.println("RECEIVED");
+		System.out.println(taskList);
+		System.out.println(guiController.taskList.getItems());
 		for (Task newTask : taskList) {
 			if (newTask.deadline.equals("")) {
 				guiController.populateTaskList("@" + newTask.user + ": " + newTask.task + "\n");
@@ -160,6 +169,7 @@ public class Client extends Thread {
 	}
 	
 	public void loadHistory(ArrayList <Message> chatHistory) {
+		guiController.chatView.setText("");
 		for (Message message : chatHistory) {
 				guiController.append((String) message.content, message.sender);
 			

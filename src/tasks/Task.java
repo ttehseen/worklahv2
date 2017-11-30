@@ -19,4 +19,9 @@ public class Task implements Serializable {
 	public void setDeadline(String _deadline) {
 		this.deadline = _deadline;
 	}
+	
+	@Override
+	public String toString() {
+		return("Task: " + this.task + "\nUser: " + this.user + "\nDeadline: " + this.deadline);
+	}
 }

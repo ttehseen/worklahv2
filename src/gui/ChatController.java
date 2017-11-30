@@ -50,7 +50,7 @@ public class ChatController implements Initializable {
 	@FXML
 	public ListView<String> taskList;
 	@FXML
-	protected TextArea chatView;
+	public TextArea chatView;
 	@FXML
 	private ImageView profileImage;
 	@FXML
@@ -309,8 +309,13 @@ public class ChatController implements Initializable {
 		int selectedIndex = taskList.getSelectionModel().getSelectedIndex();
 		String task = taskList.getSelectionModel().getSelectedItem();
 		String selectedDate = dateSelector.getValue().toString();
-		taskList.getItems().add(selectedIndex, task +" due by " + selectedDate );
-		taskList.getItems().remove(selectedIndex + 1);
+		if (task.contains(" due by ")) {
+			task = task.substring(0, task.lastIndexOf(" ")) + " " + selectedDate;
+			
+		} else {
+			taskList.getItems().add(selectedIndex, task +" due by " + selectedDate );
+			taskList.getItems().remove(selectedIndex + 1);
+		}
 		task = task.replace("@task ", "");
 		String task_split[] = task.split(" ", 2);
 		client.setTaskDeadline(task_split[1].replace("\n", ""), selectedDate);

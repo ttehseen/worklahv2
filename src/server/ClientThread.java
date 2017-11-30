@@ -149,7 +149,6 @@ public class ClientThread extends Thread {
 		}
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
-		System.out.println(this.user.currentGroup.chatHistory);
 		send(updateGroupMessage, this);
 	}
 
@@ -158,26 +157,57 @@ public class ClientThread extends Thread {
 		String deadline = ((ArrayList <String>) message.content).get(1);
 		for (Task task : this.user.currentGroup.tasks) {
 			if (task.task.equals(_task)) {
+				System.out.println("FOUND TASK");
 				task.setDeadline(deadline);
 			}
 		}
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
-		send(updateGroupMessage, this);
+		for (User user : this.user.getGroupMembers()) {
+			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
+				user.allGroups.add(this.user.currentGroup);
+				message.type = "notifyUser";
+				if (!user.equals(this.user)) {
+					System.out.println("SENDING UPDATE");
+					System.out.println(this.user.currentGroup.tasks);
+					send(updateGroupMessage, user.getClientThread());
+				}
+			} else {
+				if (!user.equals(this.user)) {
+					System.out.println("SENDING UPDATE");
+					System.out.println(this.user.currentGroup.tasks);
+					send(updateGroupMessage, user.getClientThread());
+				}
+			}
+		}
 	}
 	
 	private void removeTask(Message message) {
 		String _task = (String) message.content;
+		System.out.println(_task);
 		Task foundTask = new Task(null, null);
 		for (Task task : this.user.currentGroup.tasks) {
 			if (task.task.equals(_task)) {
+				System.out.println("FOUND TASK");
 				foundTask = task;
 			}
 		}
 		this.user.currentGroup.tasks.remove(foundTask);
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
-		send(updateGroupMessage, this);
+		System.out.println(this.user.currentGroup.groupMemberNames);
+		System.out.println(this.user.username);
+		for (User user : this.user.getGroupMembers()) {
+			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
+				user.allGroups.add(this.user.currentGroup);
+				message.type = "notifyUser";
+				if (!user.equals(this.user)) {
+					this.send(updateGroupMessage, user.getClientThread());
+				}
+			} else {
+				this.send(updateGroupMessage, user.getClientThread());
+			}
+		}
 	}
 
 	/**
@@ -249,7 +279,7 @@ public class ClientThread extends Thread {
 		while (true) {
 			try {
 				Message message = (Message) in.readObject();
-				if (this.user != null) {
+				if (this.user != null && message != null && !message.type.equals("task")) {
 					message.setGroup(this.user.currentGroup.groupMemberNames);
 				}
 				if (message.type.equals("setUser")) {
