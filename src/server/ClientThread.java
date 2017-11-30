@@ -76,7 +76,7 @@ public class ClientThread extends Thread {
 		for (User user : this.user.getGroupMembers()) {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
 				user.allGroups.add(this.user.currentGroup);
-				message.type = "notifyUser";
+				message.type = "notifyUserTask";
 				if (!user.equals(this.user)) {
 					this.send(message, user.getClientThread());
 				}
@@ -109,6 +109,9 @@ public class ClientThread extends Thread {
 	 * @param c client thread that we want to reach
 	 */
 	public void send(Message message, ClientThread c) {
+		if (c.user.onlineStatus == false) {
+			return;
+		}
 		synchronized (this) {
 			try {
 				c.out.reset();
@@ -149,7 +152,10 @@ public class ClientThread extends Thread {
 		}
 		Message updateGroupMessage = new Message("updateGroup", null, null);
 		updateGroupMessage.content = this.user.currentGroup;
+		System.out.println("SENT UPDATE");
+		System.out.println(this.user.currentGroup.chatHistory);
 		send(updateGroupMessage, this);
+		System.out.println("UPDATE SENT");
 	}
 
 	private void updateTaskDeadline(Message message) {
@@ -294,12 +300,13 @@ public class ClientThread extends Thread {
 					this.messageHandler(message);
 				} else if (message.type.equals("goOffline")) {
 					this.user.goOffline();
-				} else if (message.type.equals("uploadFile")) {
-					this.uploadFile(message);
 				} else if (message.type.equals("taskDeadline")) {
 					this.updateTaskDeadline(message);
 				} else if (message.type.equals("removeTask")) {
 					this.removeTask(message);
+				} else if (message.type.equals("uploadingFile")) {
+					message.type = "downloadFile";
+					uploadHandler(message);
 				}
 			}
 			catch (Exception e) {
@@ -314,6 +321,31 @@ public class ClientThread extends Thread {
 			}
 		}
 	}
+	
+	/**
+	 * handles all downloads and uploads sent from a client and decides whether to notify a user or
+	 * send the download to the user main chatbox
+	 * @param message message that we would like to send to other clients
+	 * @throws IOException
+	 */
+	public void uploadHandler(Message message) throws IOException {
+		this.user.currentGroup.chatHistory.add(message);
+		for (User user : this.user.getGroupMembers()) {
+			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
+				user.allGroups.add(this.user.currentGroup);
+				message.type = "notifyUser";
+				message.content = message.sender + " would like to share a file with you!\n";
+				if (!user.equals(this.user)) {
+					this.send(message, user.getClientThread());
+				}
+			} else {
+				if (!user.equals(this.user)) {
+					message.type = "downloadFile";
+					this.send(message, user.getClientThread());
+				}
+			}
+		}
+	}
 
 	/**
 	 * handles all messages sent from a client and decides whether to notify a user or
@@ -323,6 +355,7 @@ public class ClientThread extends Thread {
 	 */
 	public void messageHandler(Message message) throws IOException {
 		this.user.currentGroup.chatHistory.add(message);
+		System.out.println(this.user.currentGroup.chatHistory);
 		for (User user : this.user.getGroupMembers()) {
 			if (!user.currentGroup.checkMembers(this.user.currentGroup.groupMemberNames)) {
 				user.allGroups.add(this.user.currentGroup);
@@ -331,23 +364,6 @@ public class ClientThread extends Thread {
 					this.send(message, user.getClientThread());
 				}
 			} else {
-				if (!user.equals(this.user)) {
-					this.send(message, user.getClientThread());
-				}
-			}
-		}
-	}
-
-	/**
-	 * uploads file attachements to other clients
-	 * @param message
-	 */
-	public void uploadFile (Message message) {
-		for (User user : this.user.getGroupMembers()) {
-			if (!user.equals(this.user)) {
-				this.send(message, user.getClientThread());
-			}
-			else {
 				if (!user.equals(this.user)) {
 					this.send(message, user.getClientThread());
 				}

@@ -1,5 +1,6 @@
 package client;
 
+import java.io.File;
 import java.io.IOException;
 import messages.Message;
 import tasks.Task;
@@ -87,6 +88,13 @@ public class Client extends Thread {
 		send(newMessage);
 	}
 	
+	public void uploadFile(File pathToFile) {
+		Message newMessage = new Message("uploadingFile", this.username, pathToFile);
+		send(newMessage);
+		Upload startUpload = new Upload("127.0.0.1", 8080, pathToFile, this.guiController);
+		startUpload.run();
+	}
+	
 	public void getOnlineUsers() {
 		Message newMessage = new Message("getUsers", this.username, null);
 		send(newMessage);
@@ -143,6 +151,10 @@ public class Client extends Thread {
 					}
 				} else if (message.type.equals("notifyUser")) {
 					this.notifyUser(message);
+				} else if (message.type.equals("downloadFile")) {
+					this.downloadFile(message);
+				} else if (message.type.equals("notifyUserTask")) {
+					this.notifyUserTask(message);
 				}
 			}
 			catch (Exception e) {
@@ -174,6 +186,11 @@ public class Client extends Thread {
 				guiController.append((String) message.content, message.sender);
 			
 		}
+	}
+	
+	public void downloadFile(Message message) {
+		Download newDownload = new Download("", guiController);
+		newDownload.run();
 	}
 	
 	public void addConversation(ArrayList <String> newConversation) {
