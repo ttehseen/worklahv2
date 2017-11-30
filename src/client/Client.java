@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import groups.Group;
 import gui.ChatController;
 import gui.PopupController;
+import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Client class to send requests for information to be send to the GUI and, in some cases, show information on the GUI
@@ -161,10 +163,11 @@ public class Client extends Thread {
 	 * sends a request to the server to upload a file to another client
 	 * @param pathToFile path to file that client wants to upload
 	 */
-	public void uploadFile(File pathToFile) {
+	public void uploadFile(File pathToFile) throws InterruptedException, UnknownHostException, IOException {
 		String path = pathToFile.toString().substring(pathToFile.toString().lastIndexOf("/") + 1);
 		Message newMessage = new Message("uploadingFile", this.username, this.username + " would like to share '" + path + "' with you!");
 		send(newMessage);
+                TimeUnit.SECONDS.sleep(1);
 		Upload startUpload = new Upload("127.0.0.1", 8888, pathToFile, this.guiController);
 		startUpload.run();
 	}
@@ -298,7 +301,7 @@ public class Client extends Thread {
 	 * Calls a thread to download the file that will be sent from another client
 	 * @param message file name of the file that will be downloaded
 	 */
-	private void downloadFile(Message message) {
+	private void downloadFile(Message message) throws IOException {
 		guiController.append((String) message.content, message.sender);
 		String fileName = (String) message.content;
 		int start = fileName.indexOf(" '");

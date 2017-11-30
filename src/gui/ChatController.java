@@ -138,7 +138,6 @@ public class ChatController implements Initializable {
 	private void userClicked(MouseEvent event) {
 		userList.getSelectionModel().getSelectedItem();
 		String newConversation = userList.getSelectionModel().getSelectedItem();
-		//		newConversation.replace("\u26AB", "");
 		if (newConversation.equals(this.currentConversation)) {
 			return;
 		}
@@ -220,7 +219,7 @@ public class ChatController implements Initializable {
 
 	@FXML
 	private void emoji4selected(MouseEvent event) {
-		String message="\u2639";
+		String message="\u2614";
 		client.sendMessageToGroup(message);
 		append(message+"\n", client.username);
 	}     
@@ -270,7 +269,6 @@ public class ChatController implements Initializable {
 	@FXML
 	private void sendPressed(MouseEvent event) throws InterruptedException {
 		String message = chatBox.getText();
-
 		if (botCheckBox.isSelected()){
 			Answers sassiAnswer = new Answers();
 			if (message.toLowerCase().contains("why")){
@@ -283,12 +281,21 @@ public class ChatController implements Initializable {
 			}
 			else if (message.toLowerCase().contains("what")){
 				append(message, client.username);
-				append(sassiAnswer.getWhat(), "SASSIBOT");}
+				append(sassiAnswer.getWhat(), "SASSIBOT");
+			}
+                        else if (message.toLowerCase().contains("where")){
+				append(message, client.username);
+				append(sassiAnswer.getWhere(), "SASSIBOT");
+			}
+                        else if (message.toLowerCase().contains("who")){
+				append(message, client.username);
+				append(sassiAnswer.getWho(), "SASSIBOT");
+			}
 			else {
 				append(message, client.username);
-				append("Nice to meet you, but not too nice.", "SASSIBOT");
+				append(sassiAnswer.getOther(), "SASSIBOT");
 			}
-		}
+                }
 		else{
 			String catchPhrase = "@task ";
 			if (message.contains(catchPhrase)) {
@@ -298,6 +305,7 @@ public class ChatController implements Initializable {
 				chatBox.setText("");
 				client.sendTaskToGroup(task_split[1], task_split[0]);
 			}
+                        
 			else{
 				client.sendMessageToGroup(message);
 				append(chatBox.getText(), client.username);
@@ -385,10 +393,9 @@ public class ChatController implements Initializable {
 
 	 */	 
 	@FXML
-	private String attachButtonPressed(MouseEvent event) {
+	private String attachButtonPressed(MouseEvent event) throws InterruptedException, IOException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Attachment");
-		fileChooser.showOpenDialog(stage);
 		File file = fileChooser.showOpenDialog(stage);
 		if (file != null) {
 			String path = file.toString().substring(file.toString().lastIndexOf("/") + 1);
