@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import gui.ChatController;
+import java.net.UnknownHostException;
 
 
 /**
@@ -36,16 +37,16 @@ public class Upload implements Runnable {
 	 * @param filepath filepath of the file we would like to upload
 	 * @param screen GUI controller to print succcess status to
 	 */
-	public Upload(String ip, int port, File filepath, ChatController screen){
-		try {
+	public Upload(String ip, int port, File filepath, ChatController screen) throws FileNotFoundException, UnknownHostException, IOException{
+//		try {
 			this.gui = screen;
 			this.connection = new Socket(InetAddress.getByName(ip), port);
 			in = new FileInputStream(filepath);
 			out = connection.getOutputStream();
-		} 
-		catch (Exception e) {
-			System.out.println("Upload could not occur.");
-		}
+//		} 
+//		catch (Exception e) {
+//			System.out.println("Upload could not occur.");
+//		}
 	}
 
 	/* 
@@ -61,16 +62,9 @@ public class Upload implements Runnable {
 				out.write(buffer, 0, count);
 			}
 			out.flush();
-
-			if (in != null) { 
-				in.close(); 
-			}
-			if (out != null) { 
-				out.close(); 
-			}
-			if (connection != null) {
-				connection.close(); 
-			}
+                        in.close(); 
+                        out.close(); 
+                        connection.close(); 
 		}
 		catch (Exception ex) {
 			this.gui.chatView.appendText("........\nUpload Failure. Please try again!\n\n");

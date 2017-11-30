@@ -40,15 +40,15 @@ public class Download implements Runnable {
 	 * @param saveTo file directory to save to
 	 * @param gui GUI controller
 	 */
-	public Download(String saveTo, ChatController gui){
-		try {
+	public Download(String saveTo, ChatController gui) throws IOException{
+//		try {
 			server = new ServerSocket(8888);
 			this.saveTo = saveTo;
 			this.guiController = gui;
-		} 
-		catch (IOException ex) {
+//		} 
+//		catch (IOException ex) {
 			System.out.println("An error occurred while attempting to download.");
-		}
+//		}
 	}
 
 	/* 
@@ -57,7 +57,8 @@ public class Download implements Runnable {
 	 */
 	@Override
 	public void run() {
-		try {
+            while(true){
+                try {
 			connection = server.accept();
 			System.out.println("Download : "+ connection.getRemoteSocketAddress());
 			in = connection.getInputStream();
@@ -70,22 +71,19 @@ public class Download implements Runnable {
 			}
 			bufferedOut.flush();
 			guiController.chatView.appendText("........\nDownload Complete. Saved to current working directory.\n\n");
-
-			if (out != null) { 
-				out.close(); 
-			}
-			if (in != null) { 
-				in.close(); 
-			}
-			if (connection != null) {
-				connection.close(); 
-			}
+			out.flush();
+                        in.close(); 
+                        out.close(); 
+                        connection.close(); 
+                        break;
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
 			guiController.chatView.appendText("........\nDownload Failure. Please try again!\n\n");
 			System.out.println("An error occured while running the download.\n");
+                        break;
 		}
+            }
 	}
 }
 
