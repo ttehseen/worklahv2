@@ -164,11 +164,8 @@ public class Client extends Thread {
 	
 	public void loadHistory(ArrayList <Message> chatHistory) {
 		for (Message message : chatHistory) {
-			if (message.sender.equals(this.username)) {
-				guiController.append2((String) message.content + "\n");
-			} else {
-				guiController.append((String) message.content);
-			}
+				guiController.append((String) message.content + "\n");
+			
 		}
 	}
 	

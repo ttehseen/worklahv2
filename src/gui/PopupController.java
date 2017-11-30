@@ -53,7 +53,6 @@ public class PopupController implements Initializable {
 		final Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		this.chatController.chatView.setText("");
-		this.chatController.chatView2.setText("");
 		this.chatController.conversantName.setText(String.join(", ", showing));
 		this.chatController.conversantImage.setVisible(true);
 		this.chatController.greenCircle.setVisible(true);
@@ -70,7 +69,6 @@ public class PopupController implements Initializable {
 			final Stage stage = (Stage) source.getScene().getWindow();
 			stage.close();
 			this.chatController.chatView.setText("");
-			this.chatController.chatView2.setText("");
 			this.chatController.conversantName.setText(String.join(", ", showing));
 			this.chatController.conversantImage.setVisible(true);
 			this.chatController.greenCircle.setVisible(true);

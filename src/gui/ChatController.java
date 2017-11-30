@@ -46,8 +46,6 @@ public class ChatController implements Initializable {
 	@FXML
 	protected TextArea chatView;
 	@FXML
-	protected TextArea chatView2;
-	@FXML
 	private ImageView profileImage;
 	@FXML
 	private ImageView sendButton;
@@ -119,7 +117,6 @@ public class ChatController implements Initializable {
 		 }
 		 conversantName.setText(userList.getSelectionModel().getSelectedItem());
 		 chatView.setText("");
-		 chatView2.setText("");
 		 for (ArrayList <String> conversation : this.conversations) {
 			 if (newConversation.equals(String.join(", ", conversation))) {
 				 client.updateGroup(conversation);
@@ -174,34 +171,34 @@ public class ChatController implements Initializable {
 	 void emoji1selected(MouseEvent event) {
 		 String message="\u2615";
 		 client.sendMessageToGroup(message);
-		 append2(message+"\n");
+		 append(message+"\n");
 	 }
 
 	 @FXML
 	 void emoji2selected(MouseEvent event) {
 		 String message="\u263A";
 		 client.sendMessageToGroup(message);
-		 append2(message+"\n");
+		 append(message+"\n");
 	 }
 
 	 @FXML
 	 void emoji3selected(MouseEvent event) {
 		 String message="\u2608";
 		 client.sendMessageToGroup(message);
-		 append2(message+"\n");
+		 append(message+"\n");
 	 }
 
 	 @FXML
 	 void emoji4selected(MouseEvent event) {
 		 String message="\u2639";
 		 client.sendMessageToGroup(message);
-		 append2(message+"\n");
+		 append(message+"\n");
 	 }        
 
 	 @FXML
 	 void botChecked(MouseEvent event) {
 		 chatView.setText("");
-		 chatView2.setText("");
+
 	 }
 
 	 @FXML
@@ -216,18 +213,18 @@ public class ChatController implements Initializable {
 		 if (botCheckBox.isSelected()){
 			 Answers sassiAnswer = new Answers();
 			 if (message.toLowerCase().contains("why")){
-				 append2(message);
+				 append(message);
 				 append(sassiAnswer.getWhy());
 			 }
 			 else if (message.toLowerCase().contains("how")){
-				 append2(message);
+				 append(message);
 				 append(sassiAnswer.getHow());
 			 }
 			 else if (message.toLowerCase().contains("what")){
-				 append2(message);
+				 append(message);
 				 append(sassiAnswer.getWhat());}
 			 else {
-				 append2(message);
+				 append(message);
 				 append("Nice to meet you, but not too nice.");
 			 }
 		 }
@@ -242,7 +239,7 @@ public class ChatController implements Initializable {
 			 }
 			 else{
 				 client.sendMessageToGroup(message);
-				 append2(chatBox.getText());
+				 append(chatBox.getText());
 			 }
 
 			 chatBox.setText("");
@@ -268,18 +265,18 @@ public class ChatController implements Initializable {
 		 if (botCheckBox.isSelected()){
 			 Answers sassiAnswer = new Answers();
 			 if (message.toLowerCase().contains("why")){
-				 append2(message);
+				 append(message);
 				 append(sassiAnswer.getWhy());
 			 }
 			 else if (message.toLowerCase().contains("how")){
-				 append2(message);
+				 append(message);
 				 append(sassiAnswer.getHow());
 			 }
 			 else if (message.toLowerCase().contains("what")){
-				 append2(message);
+				 append(message);
 				 append(sassiAnswer.getWhat());}
 			 else {
-				 append2(message);
+				 append(message);
 				 append("Nice to meet you, but not too nice.");
 			 }
 		 } else {
@@ -293,7 +290,7 @@ public class ChatController implements Initializable {
 			 }
 			 else {
 				 client.sendMessageToGroup(message);
-				 append2(chatBox.getText());
+				 append(chatBox.getText());
 			 }
 
 			 chatBox.setText("");
@@ -312,17 +309,10 @@ public class ChatController implements Initializable {
 		 chatView.setFont(Font.loadFont("file:resources/fonts/OpenSansEmoji.ttf", 15));
 		 chatView.appendText(timeStamp + " " + str  +  "\n");
 		 chatView.selectPositionCaret(chatView.getText().length()-1);
-		 chatView2.appendText("\n");
 		 chatBox.setText("");
 	 }
 	 
-	 public void append2(String str) {
-		 String timeStamp;
-		 timeStamp = new SimpleDateFormat("HH:m" + "m ").format(Calendar.getInstance().getTime());
-		 chatView2.appendText(str + " " + timeStamp+ "\n");
-		 chatView2.selectPositionCaret(chatView2.getText().length()-1);
-		 chatBox.setText("");
-	 }
+	 
 
 	 public void populateUserList(String _user) throws IllegalStateException {
 		 try {
