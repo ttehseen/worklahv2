@@ -115,7 +115,9 @@ public class ChatController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		userName.setText(userID);
 	}    
-
+/**
+ * Initializes conversations.
+ */
 	protected void initialiseConversations() {
 		this.conversations = new ArrayList<ArrayList<String>>();
 		this.sassiBot = false;
@@ -165,15 +167,7 @@ public class ChatController implements Initializable {
 		}
 	}
 
-	/**
-	 * We were exhaustive in our listeners to make sure that we get have all the resources we require for an
-	 * interactive GUI.
-	 * @param event 
-	 */ 
-	@FXML
-	private void taskClicked(MouseEvent event) {
-
-	}
+	
 	
 	/**
 	 * Opens up a popup window that has references to the userList. It receives the list of users online
@@ -263,7 +257,7 @@ public class ChatController implements Initializable {
 	}
 	
 	/**
-	 * Exits the system.
+	 * Disconnects and exits the program.
 	 * @param event 
 	 */
 	@FXML
@@ -320,7 +314,7 @@ public class ChatController implements Initializable {
 		}
 	}
 	/**
-	 * Opens up a pop-up calendar that gets the date and appends it the selected task.
+	 * Opens up a pop-up calendar that gets the date and appends it to the selected task.
 	 * @param event 
 	 */
 	@FXML
@@ -448,11 +442,17 @@ public class ChatController implements Initializable {
 		} catch (IllegalStateException e) {
 		}
 	}
-        
+        /**
+         * Method to populate the Tasks. Takes in a string and adds it to the string of tasks.
+         * @param _task 
+         */
 	public void populateTaskList(String _task){
 		taskList.getItems().add(_task);
 	}
-
+/**
+ * Method to add to the conversations.
+ * @param _conversation 
+ */
 	public void addConversation(ArrayList <String> _conversation) {
 		for (ArrayList <String> conversation : this.conversations) {
 			if (checkMembers(conversation, _conversation)) {
@@ -462,7 +462,12 @@ public class ChatController implements Initializable {
 		conversations.add(_conversation);
 		populateUserList(String.join(", ", _conversation));
 	}
-	
+/**
+ * Method to check the Members of a group.
+ * @param group1
+ * @param group2
+ * @return 
+ */	
 	public boolean checkMembers(ArrayList <String> group1, ArrayList <String> group2) {
 		Collections.sort(group1);
 		Collections.sort(group2);
@@ -470,7 +475,7 @@ public class ChatController implements Initializable {
 	}
 
 	/**
-	 * Method that deletes a task by rightclicking and pressing on it.
+	 * Method that deletes a task by right-clicking and pressing on it.
 	 * @param event 
 	 */
 	@FXML
@@ -479,8 +484,8 @@ public class ChatController implements Initializable {
 		String task = taskList.getItems().get(selectedIndex);
 		taskList.getSelectionModel().clearSelection();
 		taskList.getItems().remove(task);
-        chatView.setText("");
-        taskList.getItems().removeAll();
+                chatView.setText("");
+                taskList.getItems().removeAll();
 		String task_split[] = task.split(" ", 2);
 		String removeTask = task_split[1];
 		if (task.contains("due by")) {

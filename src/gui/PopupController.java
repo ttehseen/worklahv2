@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 
 /**
  * FXML Controller class
- *
+ *Contains injected GUI Components from Popup.fxml. Is used to select new online users to talk to.
  * @author student
  */
 public class PopupController implements Initializable {
@@ -38,12 +38,12 @@ public class PopupController implements Initializable {
 	protected Client client;
 	protected ChatController chatController; 
 	protected ListView<String> primaryUserList;
-	
-	@FXML
-	void onlineUserSelected(MouseEvent event) {
-		
-	}
-	
+
+	/**
+         * The next two listener methods take the selected users from the online list and add them to the user list on the
+         * previous page.
+         * @param event 
+         */
 	@FXML
 	void button2Listener(ActionEvent event) {
 		List<String> showing = onlineList.getSelectionModel().getSelectedItems();
@@ -77,7 +77,12 @@ public class PopupController implements Initializable {
 			}
 		}
 	}
-	
+	/**
+         * Method to check the Members of a conversation.
+         * @param group1
+         * @param group2
+         * @return 
+         */
 	public boolean checkMembers(ArrayList <String> group1, ArrayList <ArrayList <String>> group2) {
 		boolean flag = false;
 		for (ArrayList <String> conversation : group2) {

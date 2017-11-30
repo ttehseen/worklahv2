@@ -82,7 +82,7 @@
       </ImageView>
       <AnchorPane layoutX="1019.0" layoutY="56.0" prefHeight="640.0" prefWidth="241.0" style="-fx-background-color: rgb(56,218,198);" AnchorPane.bottomAnchor="46.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
          <children>
-            <ListView fx:id="taskList" onMouseClicked="#taskClicked" opacity="0.3" prefHeight="636.0" prefWidth="241.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ListView fx:id="taskList" opacity="0.3" prefHeight="636.0" prefWidth="241.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <effect>
                   <Blend opacity="0.35" />
                </effect>
