@@ -10,6 +10,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.Client;
+import java.awt.Desktop;
+import static java.awt.SystemColor.desktop;
+import java.io.File;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -96,6 +101,7 @@ public class ChatController implements Initializable {
 	public ArrayList<ArrayList<String>> conversations;
 	String currentConversation;
 	boolean sassiBot;
+    private String fileAbsolutePath;
 
 	/**
 	 * Initializes the controller class.
@@ -371,11 +377,28 @@ public class ChatController implements Initializable {
 
 	 */	 
 	@FXML
-	void attachButtonPressed(MouseEvent event) {
+	String attachButtonPressed(MouseEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Attachment");
 		fileChooser.showOpenDialog(stage);
-	}
+                File file = fileChooser.showOpenDialog(stage);
+                if (file != null) {
+                        fileAbsolutePath=file.getAbsolutePath();
+                        return fileAbsolutePath;
+//                        System.out.println(fileAbsolutePath);
+                    }
+	return null;}
+        private Desktop desktop = Desktop.getDesktop();
+        private void openFile(File file) {
+        try {
+            desktop.open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(
+                ChatController.class.getName()).log(
+                    Level.SEVERE, null, ex
+                );
+        }
+    }
 	/**
 	 * Append function to add text to the chat interface. Adds a time stamp every time.
 	 * @param str 
