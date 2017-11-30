@@ -21,6 +21,7 @@ public class GuiStart extends Application {
 	/* 
 	 * Starts the main GUI that will in turn initiate a client-server connection
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 * 
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {

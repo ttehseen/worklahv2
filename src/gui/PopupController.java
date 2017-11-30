@@ -45,24 +45,8 @@ public class PopupController implements Initializable {
 	
 	@FXML
 	void button2Listener(ActionEvent event) {
-
 		List<String> showing = onlineList.getSelectionModel().getSelectedItems();
-		client.updateGroup(new ArrayList<String>(showing));
-		client.addConversation(new ArrayList<String>(showing));
-		final Node source = (Node) event.getSource();
-		final Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
-		this.chatController.chatView.setText("");
-		this.chatController.conversantName.setText(String.join(", ", showing));
-		this.chatController.conversantImage.setVisible(true);
-		this.chatController.greenCircle.setVisible(true);
-
-	}
-
-	@FXML
-	void enterPressed(KeyEvent event) {
-		if (event.getCode() == KeyCode.ENTER){
-			List<String> showing = onlineList.getSelectionModel().getSelectedItems();
+		if (!chatController.currentConversation.equals(showing)) {
 			client.updateGroup(new ArrayList<String>(showing));
 			client.addConversation(new ArrayList<String>(showing));
 			final Node source = (Node) event.getSource();
@@ -72,6 +56,24 @@ public class PopupController implements Initializable {
 			this.chatController.conversantName.setText(String.join(", ", showing));
 			this.chatController.conversantImage.setVisible(true);
 			this.chatController.greenCircle.setVisible(true);
+		}
+	}
+
+	@FXML
+	void enterPressed(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER){
+			List<String> showing = onlineList.getSelectionModel().getSelectedItems();
+			if (!chatController.currentConversation.equals(showing)) {
+				client.updateGroup(new ArrayList<String>(showing));
+				client.addConversation(new ArrayList<String>(showing));
+				final Node source = (Node) event.getSource();
+				final Stage stage = (Stage) source.getScene().getWindow();
+				stage.close();
+				this.chatController.chatView.setText("");
+				this.chatController.conversantName.setText(String.join(", ", showing));
+				this.chatController.conversantImage.setVisible(true);
+				this.chatController.greenCircle.setVisible(true);
+			}
 		}
 	}
 	
