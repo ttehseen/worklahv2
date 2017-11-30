@@ -31,6 +31,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 /**
  * FXML Controller class
@@ -300,7 +301,9 @@ public class ChatController implements Initializable {
 	 
 	 @FXML
 	 void attachButtonPressed(MouseEvent event) {
-		 System.out.print(userID);
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Attachment");
+            fileChooser.showOpenDialog(stage);
 	 }
 
 	 public void append(String str) {

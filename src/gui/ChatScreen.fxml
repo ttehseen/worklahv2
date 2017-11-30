@@ -5,10 +5,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
@@ -53,11 +55,11 @@
             <Font name="Avenir Roman" size="18.0" />
          </font>
       </Text>
-      <HBox layoutX="207.0" layoutY="9.0">
+      <HBox layoutX="206.0" layoutY="14.0">
          <children>
-            <ImageView fx:id="conversantImage" fitHeight="34.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="conversantImage" fitHeight="43.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@assets/geoffrey.jpg" />
+                  <Image url="@assets/profile-icon-9.png" />
                </image>
             </ImageView>
             <Ellipse fx:id="greenCircle" fill="#22cd61" radiusX="7.0" radiusY="9.0" scaleY="0.8" smooth="false" stroke="#eeeeee" strokeType="INSIDE" visible="false">
@@ -79,9 +81,9 @@
          </image>
       </ImageView>
       <TextField fx:id="chatBox" layoutX="251.0" layoutY="695.0" onAction="#enterPressedChat" prefHeight="41.0" prefWidth="697.0" promptText="Type message...." AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="251.0" AnchorPane.rightAnchor="309.0" />
-      <ImageView fx:id="profileImage" fitHeight="34.0" fitWidth="37.0" layoutX="14.0" layoutY="557.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="14.0">
+      <ImageView fx:id="profileImage" fitHeight="40.0" fitWidth="42.0" layoutX="6.0" layoutY="557.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="6.0">
          <image>
-            <Image url="@assets/Screen%20Shot%202017-11-25%20at%201.39.34%20AM.png" />
+            <Image url="@assets/profile-icon-9.png" />
          </image>
       </ImageView>
       <Ellipse fill="#22cd61" layoutX="55.0" layoutY="574.0" radiusX="7.0" radiusY="9.0" scaleY="0.8" smooth="false" stroke="#eeeeee" strokeType="INSIDE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="48.0" />
@@ -96,10 +98,17 @@
       </ImageView>
       <AnchorPane layoutX="1071.0" layoutY="58.0" prefHeight="638.0" prefWidth="190.0" style="-fx-background-color: rgb(56,218,198);" AnchorPane.bottomAnchor="46.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
          <children>
-            <ListView fx:id="taskList" onMouseClicked="#taskClicked" onMouseDragged="#taskDragged" opacity="0.3" prefHeight="639.0" prefWidth="190.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ListView fx:id="taskList" onMouseClicked="#taskClicked" opacity="0.3" prefHeight="639.0" prefWidth="190.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <effect>
                   <Blend opacity="0.35" />
                </effect>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem fx:id="deletePressed" mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
             </ListView>
          </children>
       </AnchorPane>
