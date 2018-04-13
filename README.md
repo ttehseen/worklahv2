@@ -12,25 +12,21 @@ Instructions for login:
 
 Our program automatically saves all user data but the user _must_ enter the correct username and password that they used to login in the first time. Our server de facto registers a new user with a username and password when they login for the first time.
 
-![alt text](http://url/to/img1.png)
-worklahv2/img1.png
 
-[[https://github.com/username/repository/blob/master/img/octocat.png|alt=octocat]]
-[[https://github.com/ttehseen/worklahv2/blob/master/img1.png|alt=img1]]
-![Alt text](worklahv2/img1.png?raw=true "Optional Title")
-![Figure 1-1](https://github.com/ttehseen/worklahv2/blob/master/img1.png "Figure 1-1")
-
+![Figure 1-1](https://github.com/ttehseen/worklahv2/blob/master/img1.png "Login Screen")
+![Figure 1-2](https://github.com/ttehseen/worklahv2/blob/master/img2.png "Home Screen")
 Instructions for starting a new chat:
 
 Click the new chat icon button at the top right of the application. It will display a list of currently online users. Select from the set of users to start a new chat.
-
+![Figure 1-3](https://github.com/ttehseen/worklahv2/blob/master/img3.png "Select User")
 
 
 Instructions for starting a new group chat:
 
 Same as above, but to select multiple users, hold down the _cmd_ while selecting users to join the group.
+![Figure 1-4](https://github.com/ttehseen/worklahv2/blob/master/img11.png "Selecting multiple users for a group chat")
 
-
+![Figure 1-42](https://github.com/ttehseen/worklahv2/blob/master/img13.png "Chatting with a group")
 
 Instructions for task functionality:
 
@@ -40,13 +36,17 @@ The structure for creating a new task is as follows:
 
 '@task user_task_assigned_to actual_task'
 
-For example, to assign the task 'Do the dishes' to 'Joe', one would type:
+For example, to assign the task 'let's go eat tomorrow' to 'Joe', one would type:
 
-'@task Joe Do the dishes'
+'@task Joe let's go eat tomorrow'
+
+![Figure 1-5](https://github.com/ttehseen/worklahv2/blob/master/img6.png "Setting a task")
 
 2. Deadlining: 
 
 To assign a deadline for the task, select the task and choose a deadline from the date selector at the bottom of the task list.
+
+![Figure 1-6](https://github.com/ttehseen/worklahv2/blob/master/img7.png "Setting a deadline for the task")
 
 3. Deleting
 
@@ -58,7 +58,7 @@ Instructions for using Sassibot:
 
 To use Sassibot, check the box 'Sassibot' and begin chatting. Sassibot disables other chats while in use so be sure to disable Sassibot before chatting with other users again!
 
-
+![Figure 1-7](https://github.com/ttehseen/worklahv2/blob/master/img10.png "Sassibot")
 
 Instructions for logging out:
 
