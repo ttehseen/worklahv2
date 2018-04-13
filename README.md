@@ -60,6 +60,13 @@ To use Sassibot, check the box 'Sassibot' and begin chatting. Sassibot disables 
 
 ![Figure 1-7](https://github.com/ttehseen/worklahv2/blob/master/img10.png "Sassibot")
 
+Instructions for file upload:
+
+To upload a file, click the file upload button in any active chat and select a file from the finder window. The file is received by the other users and saved in the working directory of the app.
+
+![Figure 1-71](https://github.com/ttehseen/worklahv2/blob/master/img8.png "Sending a file")
+![Figure 1-72](https://github.com/ttehseen/worklahv2/blob/master/img9.png "File Received")
+
 Instructions for logging out:
 
 To logout, click the logout button on the bottom left of the application. 
