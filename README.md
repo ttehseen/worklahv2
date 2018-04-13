@@ -17,6 +17,7 @@ worklahv2/img1.png
 
 [[https://github.com/username/repository/blob/master/img/octocat.png|alt=octocat]]
 [[https://github.com/ttehseen/worklahv2/blob/master/img1.png|alt=img1]]
+![Alt text](worklahv2/img1.png?raw=true "Optional Title")
 
 Instructions for starting a new chat:
 
