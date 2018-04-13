@@ -12,7 +12,7 @@ Instructions for login:
 
 Our program automatically saves all user data but the user _must_ enter the correct username and password that they used to login in the first time. Our server de facto registers a new user with a username and password when they login for the first time.
 
-
+![alt text](http://url/to/img1.png)
 
 Instructions for starting a new chat:
 
